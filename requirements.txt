@@ -1,0 +1,9 @@
+Django==4.2.7  # Django 5 chưa hỗ trợ tốt MySQL với Python 3.12
+djangorestframework==3.14.0  # Mới nhất, ổn định với Django 4.2
+pymysql==1.1.0  # Hỗ trợ tốt MySQL với Python 3.12
+django-cors-headers==4.3.1  # Hỗ trợ CORS cho API
+djangorestframework-simplejwt==5.3.1  # Authentication bằng JWT
+django-filter==23.3  # Lọc dữ liệu API dễ dàng
+asgiref==3.7.2  # Hỗ trợ Django async (Mới nhất, ổn định)
+pytz==2024.1    # Mới nhất, hỗ trợ múi giờ đầy đủ
+python-dotenv #
