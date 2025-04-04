@@ -11,3 +11,4 @@ class PlaylistTrack(models.Model):
     class Meta:
         unique_together = ('playlist', 'track')
         ordering = ['position']
+        db_table = 'playlist_track'

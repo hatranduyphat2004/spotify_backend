@@ -9,3 +9,4 @@ class TrackGenre(models.Model):
     
     class Meta:
         unique_together = ('track', 'genre')
+        db_table = 'track_genre'

@@ -10,4 +10,5 @@ class UserLikedAlbum(models.Model):
     
     class Meta:
         unique_together = ('user', 'album')
+        db_table = 'user_liked_album'
        

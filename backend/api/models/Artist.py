@@ -8,5 +8,8 @@ class Artist(models.Model):
     profile_picture = models.ImageField(upload_to='artists/', blank=True, null=True)  # Upload vào folder media/artists/
     is_active = models.BooleanField(default=True)
     
+    class Meta:
+        db_table = 'artist'
+
     def __str__(self):
         return self.name

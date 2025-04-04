@@ -15,3 +15,4 @@ class ArtistTrack(models.Model):
     
     class Meta:
         unique_together = ('artist', 'track')
+        db_table = 'artist_track'

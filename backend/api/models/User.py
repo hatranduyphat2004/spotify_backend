@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 
 # Quản lý User
 class UserManager(BaseUserManager):
-    def create_user(self, email, username, password=None,groups=None, **extra_fields):
+    def create_user(self, email, username, password=None, groups=None, **extra_fields):
         # Kiểm tra email
         if not email:
             raise ValidationError("Users must have an email address")
@@ -16,10 +16,9 @@ class UserManager(BaseUserManager):
         else:
             raise ValidationError("Password is required for creating a user")
         
-
         user.save(using=self._db)
 
-         # Nếu có nhóm (groups), gán cho user
+        # Nếu có nhóm (groups), gán cho user
         if groups:
             user.groups.set(groups) 
 
@@ -51,6 +50,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
+
+    class Meta:
+        db_table = 'user'
 
     def __str__(self):
         return self.username

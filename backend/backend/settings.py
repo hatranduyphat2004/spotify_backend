@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework_simplejwt',
     'rest_framework',
+    'drf_yasg',  # Swagger for API documentation
 ]
 
 MIDDLEWARE = [

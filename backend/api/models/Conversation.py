@@ -6,5 +6,8 @@ class Conversation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     
+    class Meta:
+        db_table = 'conversation'
+
     def __str__(self):
         return self.name or f"Conversation {self.conversation_id}"

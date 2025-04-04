@@ -11,6 +11,9 @@ class Track(models.Model):
     popularity = models.PositiveIntegerField(default=0)
     preview_url = models.URLField(blank=True)
     is_active = models.BooleanField(default=True)
+
+    class Meta:
+        db_table = 'track'
     
     def __str__(self):
         return self.title

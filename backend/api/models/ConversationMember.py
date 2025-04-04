@@ -10,4 +10,5 @@ class ConversationMember(models.Model):
     
     class Meta:
         unique_together = ('conversation', 'user')
+        db_table = 'conversation_member'
 

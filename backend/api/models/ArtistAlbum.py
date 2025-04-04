@@ -9,4 +9,5 @@ class ArtistAlbum(models.Model):
     
     class Meta:
         unique_together = ('artist', 'album') 
+        db_table = 'artist_album'
 

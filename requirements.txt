@@ -7,3 +7,7 @@ django-filter==23.3  # Lọc dữ liệu API dễ dàng
 asgiref==3.7.2  # Hỗ trợ Django async (Mới nhất, ổn định)
 pytz==2024.1    # Mới nhất, hỗ trợ múi giờ đầy đủ
 python-dotenv #
+
+
+# Tài liệu API tự động
+drf-yasg==1.21.5

@@ -7,5 +7,8 @@ class Genre(models.Model):
     description = models.TextField(blank=True)
     is_active = models.BooleanField(default=True)
     
+    class Meta:
+        db_table = 'genre'
+
     def __str__(self):
         return self.name
