@@ -1,5 +1,5 @@
 from django.db import models
-from Folder import Folder
+from .Folder import Folder
 
 class Playlist(models.Model):
     playlist_id = models.AutoField(primary_key=True)

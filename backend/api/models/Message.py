@@ -1,6 +1,6 @@
 from django.db import models
-from Conversation import Conversation
-from User import User
+from .Conversation import Conversation
+from .User import User
 
 class Message(models.Model):
     message_id = models.AutoField(primary_key=True)

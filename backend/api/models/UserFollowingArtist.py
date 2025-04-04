@@ -1,6 +1,6 @@
 from django.db import models
-from User import User
-from Artist import Artist
+from .User import User
+from .Artist import Artist
 
 
 class UserFollowingArtist(models.Model):

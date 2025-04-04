@@ -1,6 +1,6 @@
 from django.db import models
-from User import User
-from Track import Track
+from .User import User
+from .Track import Track
 
 class UserLikedTrack(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

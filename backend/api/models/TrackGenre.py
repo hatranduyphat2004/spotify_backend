@@ -1,6 +1,6 @@
 from django.db import models
-from Track import Track
-from Genre import Genre
+from .Track import Track
+from .Genre import Genre
 
 class TrackGenre(models.Model):
     track = models.ForeignKey(Track, on_delete=models.CASCADE)

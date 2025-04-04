@@ -1,6 +1,6 @@
 from django.db import models
-from Playlist import Playlist
-from Track import Track
+from .Playlist import Playlist
+from .Track import Track
 
 class PlaylistTrack(models.Model):
     playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE)

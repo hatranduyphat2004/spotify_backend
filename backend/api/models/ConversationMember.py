@@ -1,6 +1,6 @@
 from django.db import models
-from Conversation import Conversation
-from User import User
+from .Conversation import Conversation
+from .User import User
 
 class ConversationMember(models.Model):
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
