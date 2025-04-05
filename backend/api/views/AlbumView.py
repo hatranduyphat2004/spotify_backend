@@ -26,20 +26,25 @@ class AlbumView(APIView):
 
     def post(self, request):
         """Thêm một album mới, yêu cầu có ít nhất một nghệ sĩ."""
-        artists_data = request.data.pop('artists', [])  # Lấy danh sách nghệ sĩ từ request
-        
+        data = request.data.copy()  # Sử dụng copy() để đảm bảo dữ liệu có thể thay đổi
+        # Lấy danh sách nghệ sĩ từ request
+        artists_data = data.pop('artists', [])
         if not artists_data:
-            return Response({"error": "Album phải có ít nhất một nghệ sĩ."}, status=status.HTTP_400_BAD_REQUEST)
-        
-        serializer = AlbumSerializer(data=request.data)
+            return Response({"error": "Album phải thuộc ít nhất của một nghệ sĩ."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Kiểm tra album dữ liệu hợp lệ
+        serializer = AlbumSerializer(data=data)
         if serializer.is_valid():
             album = serializer.save()
+
+            # Lưu quan hệ giữa album và nghệ sĩ
             for artist_id in artists_data:
                 artist = get_object_or_404(Artist, pk=artist_id)
                 ArtistAlbum.objects.create(artist=artist, album=album)
-            
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({"errors": serializer.errors, "success": False}, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):
         """Cập nhật thông tin album theo ID."""

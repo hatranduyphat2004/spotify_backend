@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
 from api.serializers.ArtistSerializer import ArtistSerializer
 from api.models.Artist import Artist
+from rest_framework.exceptions import ValidationError
 
 
 class ArtistView(APIView):
@@ -24,20 +25,44 @@ class ArtistView(APIView):
 
     def post(self, request):
         """Thêm một artist mới."""
+        # Kiểm tra nếu có file ảnh và thêm vào dữ liệu
+        if 'profile_picture' in request.FILES:
+            request.data['profile_picture'] = request.FILES['profile_picture']
+
+        # Sử dụng serializer để kiểm tra tính hợp lệ của dữ liệu
         serializer = ArtistSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            try:
+                # Lưu artist vào cơ sở dữ liệu
+                artist = serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            except ValidationError as e:
+                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            # Nếu dữ liệu không hợp lệ, trả về lỗi
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):
         """Cập nhật thông tin artist theo ID."""
+        # Lấy đối tượng artist từ cơ sở dữ liệu theo pk
         artist = get_object_or_404(Artist, pk=pk)
+
+        # Kiểm tra xem có file ảnh mới không
+        if 'profile_picture' in request.FILES:
+            request.data['profile_picture'] = request.FILES['profile_picture']
+
+        # Sử dụng serializer để cập nhật thông tin artist
         serializer = ArtistSerializer(artist, data=request.data, partial=True)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            try:
+                # Lưu các thay đổi vào cơ sở dữ liệu
+                artist = serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            except ValidationError as e:
+                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            # Nếu dữ liệu không hợp lệ, trả về lỗi
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
         """Xoá artist theo ID."""

@@ -10,12 +10,17 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+from datetime import timedelta
 from pathlib import Path
+from dotenv import load_dotenv
 import os
+
+
+# Tải các biến môi trường từ file .env
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-from datetime import timedelta
 
 
 # Quick-start development settings - unsuitable for production
@@ -29,6 +34,18 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+# Cấu hình cho AWS S3
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+# Vùng của bạn (ví dụ: us-west-2)
+AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME')
+AWS_S3_SIGNATURE_VERSION = os.getenv('AWS_S3_SIGNATURE_VERSION')
+# Cấu hình tải lên file lên S3
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_DEFAULT_ACL = None  # Optional, specify ACL as needed (e.g., 'public-read')
+# Optional: Cấu hình CDN URL (Nếu bạn muốn sử dụng CDN để phục vụ file)
+AWS_S3_CUSTOM_DOMAIN = os.getenv('AWS_S3_CUSTOM_DOMAIN')
 
 # Application definition
 
@@ -44,6 +61,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework_simplejwt',
     'rest_framework',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -83,31 +101,31 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',  # Sử dụng MySQL
-    #     'NAME': 'spotify',  # Thay bằng tên database của bạn
-    #     'USER': 'root',  # Tài khoản MySQL
-    #     'PASSWORD': '',  # Mật khẩu MySQL
-    #     'HOST': 'localhost',  # Nếu dùng máy chủ từ xa, thay bằng IP
-    #     'PORT': '2434',  # Cổng của P
-    #     # 'PORT': '',  # Cổng theo máy
-    #     'OPTIONS': {
-    #         'charset': 'utf8mb4',  # Hỗ trợ Unicode đầy đủ
-    #     },
-    # }
-
-    #Luan
-     'default': {
+    # phat
+    'default': {
         'ENGINE': 'django.db.backends.mysql',  # Sử dụng MySQL
         'NAME': 'spotify',  # Thay bằng tên database của bạn
         'USER': 'root',  # Tài khoản MySQL
-        'PASSWORD': '1234',  # Mật khẩu MySQL
-        'HOST': '127.0.0.1',  # Nếu dùng máy chủ từ xa, thay bằng IP
-        'PORT': '3306',  # Cổng của MySQL
+        'PASSWORD': '',  # Mật khẩu MySQL
+        'HOST': 'localhost',  # Nếu dùng máy chủ từ xa, thay bằng IP
+        'PORT': '2434',  # Cổng của P
         'OPTIONS': {
             'charset': 'utf8mb4',  # Hỗ trợ Unicode đầy đủ
         },
     }
+
+    # Luan
+    #  'default': {
+    #     'ENGINE': 'django.db.backends.mysql',  # Sử dụng MySQL
+    #     'NAME': 'spotify',  # Thay bằng tên database của bạn
+    #     'USER': 'root',  # Tài khoản MySQL
+    #     'PASSWORD': '1234',  # Mật khẩu MySQL
+    #     'HOST': '127.0.0.1',  # Nếu dùng máy chủ từ xa, thay bằng IP
+    #     'PORT': '3306',  # Cổng của MySQL
+    #     'OPTIONS': {
+    #         'charset': 'utf8mb4',  # Hỗ trợ Unicode đầy đủ
+    #     },
+    # }
 }
 
 
@@ -146,6 +164,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'  # nếu cần
+# AWS_LOCATION = 'static'  # tùy bạn
+# STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'  # nếu có custom domain
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -164,8 +186,10 @@ REST_FRAMEWORK = {
 # JWT
 SIMPLE_JWT = {
     'USER_ID_FIELD': 'id',  # ✅ Chỉ định đúng trường khóa chính
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),  # Thời gian sống của Access Token
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),     # Thời gian sống của Refresh Token
+    # Thời gian sống của Access Token
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    # Thời gian sống của Refresh Token
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
     "AUTH_HEADER_TYPES": ("Bearer",),  # Header bắt đầu bằng "Bearer <token>"
@@ -174,8 +198,9 @@ CORS_ALLOW_ALL_ORIGINS = True  # Chấp nhận tất cả domain
 CORS_ALLOW_CREDENTIALS = True
 
 
-MEDIA_URL = '/media/'  # URL để truy cập file uploads
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Thư mục lưu trữ file uploads
+# không cần do dùng s3 aws
+# MEDIA_URL = '/media/'  # URL để truy cập file uploads
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Thư mục lưu trữ file uploads
 
 # In settings.py
 AUTH_USER_MODEL = 'api.User'
