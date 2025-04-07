@@ -6,4 +6,11 @@ djangorestframework-simplejwt==5.3.1  # Authentication bằng JWT
 django-filter==23.3  # Lọc dữ liệu API dễ dàng
 asgiref==3.7.2  # Hỗ trợ Django async (Mới nhất, ổn định)
 pytz==2024.1    # Mới nhất, hỗ trợ múi giờ đầy đủ
+boto3   # AWS SDK cho Python
+pydub   # Xử lý âm thanh (chuyển đổi, cắt, ghép...)
+django-storages  # Hỗ trợ lưu trữ trên S3 hoặc các backend ngoài
+mutagen
+Pillow
+channels
+channels_redis
 python-dotenv #
