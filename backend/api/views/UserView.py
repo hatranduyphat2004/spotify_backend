@@ -8,40 +8,65 @@ from api.serializers.UserSerializer import UserSerializer
 from api.models.User import User
 
 
-
 class UserView(APIView):
-   permission_classes = [IsAuthenticated]  # Yêu cầu xác thực JWT
-   parser_classes = [MultiPartParser, FormParser]  # Hỗ trợ upload file
+    permission_classes = [IsAuthenticated]  # Yêu cầu xác thực JWT
+    parser_classes = [MultiPartParser, FormParser]  # Hỗ trợ upload file
 
-   def get(self, request, pk=None):
+    def get(self, request, pk=None):
         """Lấy danh sách user hoặc một user cụ thể."""
         if pk:
             user = get_object_or_404(User, pk=pk)
             serializer = UserSerializer(user)
+            return Response({
+                "success": True,
+                "data": serializer.data
+            }, status=status.HTTP_200_OK)
         else:
             users = User.objects.all()
             serializer = UserSerializer(users, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response({
+                "success": True,
+                "data": serializer.data
+            }, status=status.HTTP_200_OK)
 
-   def post(self, request):
+    def post(self, request):
         """Tạo user mới."""
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                "success": True,
+                "message": "Người dùng đã được tạo thành công",
+                "data": serializer.data
+            }, status=status.HTTP_201_CREATED)
+        return Response({
+            "success": False,
+            "message": "Dữ liệu không hợp lệ",
+            "errors": serializer.errors
+        }, status=status.HTTP_400_BAD_REQUEST)
 
-   def put(self, request, pk):
+    def put(self, request, pk):
         """Cập nhật user theo ID."""
         user = get_object_or_404(User, pk=pk)
         serializer = UserSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                "success": True,
+                "message": "Người dùng đã được cập nhật thành công",
+                "data": serializer.data
+            }, status=status.HTTP_200_OK)
+        return Response({
+            "success": False,
+            "message": "Dữ liệu không hợp lệ",
+            "errors": serializer.errors
+        }, status=status.HTTP_400_BAD_REQUEST)
 
-   def delete(self, request, pk):
+    def delete(self, request, pk):
         """Xoá user theo ID."""
         user = get_object_or_404(User, pk=pk)
         user.delete()
-        return Response({"message": "User deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        return Response({
+            "success": True,
+            "message": "Người dùng đã được xoá thành công"
+        }, status=status.HTTP_204_NO_CONTENT)
