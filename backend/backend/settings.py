@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework',
     'storages',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -122,6 +123,19 @@ DATABASES = {
     #     'PASSWORD': '1234',  # Mật khẩu MySQL
     #     'HOST': '127.0.0.1',  # Nếu dùng máy chủ từ xa, thay bằng IP
     #     'PORT': '3306',  # Cổng của MySQL
+    #     'OPTIONS': {
+    #         'charset': 'utf8mb4',  # Hỗ trợ Unicode đầy đủ
+    #     },
+    # }
+
+    # minh
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',  # Sử dụng MySQL
+    #     'NAME': 'backend_spotify',  # Thay bằng tên database của bạn
+    #     'USER': 'root',  # Tài khoản MySQL
+    #     'PASSWORD': '',  # Mật khẩu MySQL
+    #     'HOST': 'localhost',  # Nếu dùng máy chủ từ xa, thay bằng IP
+    #     'PORT': '3306',  # Cổng của P
     #     'OPTIONS': {
     #         'charset': 'utf8mb4',  # Hỗ trợ Unicode đầy đủ
     #     },
@@ -201,6 +215,19 @@ CORS_ALLOW_CREDENTIALS = True
 # không cần do dùng s3 aws
 # MEDIA_URL = '/media/'  # URL để truy cập file uploads
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # Thư mục lưu trữ file uploads
+
+# Cấu hình backend Redis cho Channels
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],  # Địa chỉ Redis
+        },
+    },
+}
+
+# Đặt ASGI application
+ASGI_APPLICATION = 'backend.asgi.application'
 
 # In settings.py
 AUTH_USER_MODEL = 'api.User'
