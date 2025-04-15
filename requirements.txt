@@ -14,3 +14,7 @@ Pillow
 channels
 channels_redis
 python-dotenv #
+
+
+# Tài liệu API tự động
+drf-yasg==1.21.5

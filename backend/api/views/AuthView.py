@@ -3,9 +3,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny
-from django.shortcuts import get_object_or_404
-from ..serializers.UserSerializer import UserSerializer
-from ..models.User import User
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+from api.serializers.UserSerializer import UserSerializer
+from api.models.User import User
 
 
 class AuthView(APIView):
@@ -54,12 +55,17 @@ class AuthView(APIView):
         }, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
-        action = kwargs.get('action')
-        if action == 'register':
+        action = kwargs.get("action")
+
+        if action == "register":
             return self.register(request)
-        elif action == 'login':
+        elif action == "login":
             return self.login(request)
-        return Response({
-            "success": False,
-            "message": "Invalid action"
-        }, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({
+                "success": False,
+                "message": "Hành động không hợp lệ"
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+
+

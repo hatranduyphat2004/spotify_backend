@@ -11,3 +11,4 @@ class UserFollowingArtist(models.Model):
     
     class Meta:
         unique_together = ('user', 'artist')
+        db_table = 'user_following_artist'

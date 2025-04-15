@@ -10,3 +10,4 @@ class UserLikedTrack(models.Model):
     
     class Meta:
         unique_together = ('user', 'track')
+        db_table = 'user_liked_track'

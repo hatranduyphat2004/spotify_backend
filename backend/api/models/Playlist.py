@@ -8,6 +8,9 @@ class Playlist(models.Model):
     cover_img_url = models.URLField(blank=True)
     is_active = models.BooleanField(default=True)
     
+    class Meta:
+        db_table = 'playlist'
+
     def __str__(self):
         return f"Playlist {self.playlist_id}"
 
