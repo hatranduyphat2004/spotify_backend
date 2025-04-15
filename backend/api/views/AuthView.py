@@ -56,12 +56,17 @@ class AuthView(APIView):
         }, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
-        """API đăng ký tài khoản"""
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save()
+        action = kwargs.get("action")
+
+        if action == "register":
+            return self.register(request)
+        elif action == "login":
+            return self.login(request)
+        else:
             return Response({
-                'user': UserSerializer(user).data,
-            }, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                "success": False,
+                "message": "Hành động không hợp lệ"
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+
 
