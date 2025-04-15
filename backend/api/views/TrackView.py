@@ -5,7 +5,6 @@ from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from api.serializers.TrackSerializer import TrackSerializer
 from api.models.Track import Track
-from mutagen.mp3 import MP3
 
 
 class TrackView(APIView):
@@ -19,14 +18,20 @@ class TrackView(APIView):
         else:
             tracks = Track.objects.all()
             serializer = TrackSerializer(tracks, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({
+            "success": True,
+            "data": serializer.data
+        }, status=status.HTTP_200_OK)
 
     def post(self, request):
         """Thêm một track mới và tải file lên S3."""
         # Kiểm tra và lấy file nhạc từ request
         track_file = request.FILES.get('file_path')
         if not track_file:
-            return Response({"error": "File nhạc không được để trống."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                "success": False,
+                "message": "File nhạc không được để trống."
+            }, status=status.HTTP_400_BAD_REQUEST)
 
         # Tạo track mới từ dữ liệu request
         data = request.data
@@ -36,9 +41,17 @@ class TrackView(APIView):
         if serializer.is_valid():
             # Lưu track vào cơ sở dữ liệu, bao gồm file tải lên S3
             track = serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response({
+                "success": True,
+                "message": "Track đã được tạo thành công",
+                "data": serializer.data
+            }, status=status.HTTP_201_CREATED)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({
+            "success": False,
+            "message": "Dữ liệu không hợp lệ",
+            "errors": serializer.errors
+        }, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):
         """Cập nhật thông tin track theo ID, bao gồm cập nhật file nhạc nếu có."""
@@ -51,11 +64,23 @@ class TrackView(APIView):
         serializer = TrackSerializer(track, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                "success": True,
+                "message": "Track đã được cập nhật thành công",
+                "data": serializer.data
+            }, status=status.HTTP_200_OK)
+
+        return Response({
+            "success": False,
+            "message": "Dữ liệu không hợp lệ",
+            "errors": serializer.errors
+        }, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
         """Xoá track theo ID."""
         track = get_object_or_404(Track, pk=pk)
         track.delete()
-        return Response({"message": "Track deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        return Response({
+            "success": True,
+            "message": "Track đã được xóa thành công"
+        }, status=status.HTTP_204_NO_CONTENT)

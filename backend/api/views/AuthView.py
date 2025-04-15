@@ -17,9 +17,11 @@ class AuthView(APIView):
         if serializer.is_valid():
             user = serializer.save()
             return Response({
-                'user': UserSerializer(user).data,
-                'success': True,
-                'message': "Đăng kí thành công",
+                "success": True,
+                "message": "Đăng kí thành công",
+                "data": {
+                    "user": UserSerializer(user).data
+                }
             }, status=status.HTTP_201_CREATED)
 
         return Response({
@@ -32,27 +34,24 @@ class AuthView(APIView):
         email = request.data.get('email')
         password = request.data.get('password')
 
-        try:
-            user = User.objects.get(email=email)
-        except User.DoesNotExist:
-            return Response({
-                'success': False,
-                'message': 'Thông tin đăng nhập không hợp lệ'
-            }, status=status.HTTP_401_UNAUTHORIZED)
+        user = User.objects.filter(email=email).first()
 
-        if not user.check_password(password):
+        if user is None or not user.check_password(password):
+            # Chỉ trả về thông báo lỗi chung
             return Response({
-                'success': False,
-                'message': 'Thông tin đăng nhập không hợp lệ'
+                "success": False,
+                "message": "Email hoặc mật khẩu không đúng"
             }, status=status.HTTP_401_UNAUTHORIZED)
 
         refresh = RefreshToken.for_user(user)
         return Response({
-            'success': True,
-            'message': 'Đăng nhập thành công',
-            'user': UserSerializer(user).data,
-            'access': str(refresh.access_token),
-            'refresh': str(refresh),
+            "success": True,
+            "message": "Đăng nhập thành công",
+            "data": {
+                "user": UserSerializer(user).data,
+                "access": str(refresh.access_token),
+                "refresh": str(refresh)
+            }
         }, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):

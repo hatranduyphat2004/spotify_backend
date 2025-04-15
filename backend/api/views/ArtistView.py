@@ -18,10 +18,17 @@ class ArtistView(APIView):
         if pk:
             artist = get_object_or_404(Artist, pk=pk)
             serializer = ArtistSerializer(artist)
+            return Response({
+                "success": True,
+                "data": serializer.data
+            }, status=status.HTTP_200_OK)
         else:
             artists = Artist.objects.all()
             serializer = ArtistSerializer(artists, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response({
+                "success": True,
+                "data": serializer.data
+            }, status=status.HTTP_200_OK)
 
     def post(self, request):
         """Thêm một artist mới."""
@@ -35,12 +42,24 @@ class ArtistView(APIView):
             try:
                 # Lưu artist vào cơ sở dữ liệu
                 artist = serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response({
+                    "success": True,
+                    "message": "Nghệ sĩ đã được tạo thành công",
+                    "data": serializer.data
+                }, status=status.HTTP_201_CREATED)
             except ValidationError as e:
-                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({
+                    "success": False,
+                    "message": "Có lỗi xảy ra trong quá trình lưu dữ liệu",
+                    "error": str(e)
+                }, status=status.HTTP_400_BAD_REQUEST)
         else:
             # Nếu dữ liệu không hợp lệ, trả về lỗi
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                "success": False,
+                "message": "Dữ liệu không hợp lệ",
+                "errors": serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):
         """Cập nhật thông tin artist theo ID."""
@@ -57,15 +76,30 @@ class ArtistView(APIView):
             try:
                 # Lưu các thay đổi vào cơ sở dữ liệu
                 artist = serializer.save()
-                return Response(serializer.data, status=status.HTTP_200_OK)
+                return Response({
+                    "success": True,
+                    "message": "Nghệ sĩ đã được cập nhật thành công",
+                    "data": serializer.data
+                }, status=status.HTTP_200_OK)
             except ValidationError as e:
-                return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({
+                    "success": False,
+                    "message": "Có lỗi xảy ra trong quá trình cập nhật dữ liệu",
+                    "error": str(e)
+                }, status=status.HTTP_400_BAD_REQUEST)
         else:
             # Nếu dữ liệu không hợp lệ, trả về lỗi
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                "success": False,
+                "message": "Dữ liệu không hợp lệ",
+                "errors": serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
         """Xoá artist theo ID."""
         artist = get_object_or_404(Artist, pk=pk)
         artist.delete()
-        return Response({"message": "Artist deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        return Response({
+            "success": True,
+            "message": "Nghệ sĩ đã được xoá thành công"
+        }, status=status.HTTP_204_NO_CONTENT)

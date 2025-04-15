@@ -22,7 +22,10 @@ class AlbumView(APIView):
         else:
             albums = Album.objects.all()
             serializer = AlbumSerializer(albums, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({
+            "success": True,
+            "data": serializer.data
+        }, status=status.HTTP_200_OK)
 
     def post(self, request):
         """Thêm một album mới, yêu cầu có ít nhất một nghệ sĩ."""
@@ -30,7 +33,14 @@ class AlbumView(APIView):
         # Lấy danh sách nghệ sĩ từ request
         artists_data = data.pop('artists', [])
         if not artists_data:
-            return Response({"error": "Album phải thuộc ít nhất của một nghệ sĩ."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                "success": False,
+                "message": "Album phải thuộc ít nhất một nghệ sĩ."
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        # Kiểm tra nếu có file ảnh và thêm vào dữ liệu
+        if 'cover_img_url' in request.FILES:
+            request.data['cover_img_url'] = request.FILES['cover_img_url']
 
         # Kiểm tra album dữ liệu hợp lệ
         serializer = AlbumSerializer(data=data)
@@ -42,21 +52,45 @@ class AlbumView(APIView):
                 artist = get_object_or_404(Artist, pk=artist_id)
                 ArtistAlbum.objects.create(artist=artist, album=album)
 
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response({
+                "success": True,
+                "message": "Album đã được tạo thành công",
+                "data": serializer.data
+            }, status=status.HTTP_201_CREATED)
 
-        return Response({"errors": serializer.errors, "success": False}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({
+            "success": False,
+            "message": "Dữ liệu không hợp lệ",
+            "errors": serializer.errors
+        }, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):
         """Cập nhật thông tin album theo ID."""
         album = get_object_or_404(Album, pk=pk)
+        # Kiểm tra nếu có file ảnh và thêm vào dữ liệu
+        if 'cover_img_url' in request.FILES:
+            request.data['cover_img_url'] = request.FILES['cover_img_url']
+
         serializer = AlbumSerializer(album, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                "success": True,
+                "message": "Album đã được cập nhật thành công",
+                "data": serializer.data
+            }, status=status.HTTP_200_OK)
+
+        return Response({
+            "success": False,
+            "message": "Dữ liệu không hợp lệ",
+            "errors": serializer.errors
+        }, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
         """Xoá album theo ID."""
         album = get_object_or_404(Album, pk=pk)
         album.delete()
-        return Response({"message": "Album deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+        return Response({
+            "success": True,
+            "message": "Album đã được xóa thành công"
+        }, status=status.HTTP_204_NO_CONTENT)
