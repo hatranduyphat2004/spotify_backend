@@ -208,6 +208,7 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": True,
     "AUTH_HEADER_TYPES": ("Bearer",),  # Header bắt đầu bằng "Bearer <token>"
 }
+
 CORS_ALLOW_ALL_ORIGINS = True  # Chấp nhận tất cả domain
 CORS_ALLOW_CREDENTIALS = True
 
