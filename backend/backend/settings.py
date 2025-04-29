@@ -102,7 +102,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    phat
+    # phat
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # Sử dụng MySQL
         'NAME': 'spotify',  # Thay bằng tên database của bạn
@@ -201,7 +201,7 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'USER_ID_FIELD': 'id',  # ✅ Chỉ định đúng trường khóa chính
     # Thời gian sống của Access Token
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=3),
     # Thời gian sống của Refresh Token
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "ROTATE_REFRESH_TOKENS": True,
@@ -232,3 +232,13 @@ ASGI_APPLICATION = 'backend.asgi.application'
 # In settings.py
 AUTH_USER_MODEL = 'api.User'
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
+
+# Cho phép các Origin được tin tưởng
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:5173",
+]
+
+# Nếu dùng API, nên cho phép CORS
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]
