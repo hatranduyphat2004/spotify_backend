@@ -201,7 +201,7 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'USER_ID_FIELD': 'id',  # ✅ Chỉ định đúng trường khóa chính
     # Thời gian sống của Access Token
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=3),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     # Thời gian sống của Refresh Token
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "ROTATE_REFRESH_TOKENS": True,
@@ -243,3 +243,5 @@ CSRF_TRUSTED_ORIGINS = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
+
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
