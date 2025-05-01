@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from api.serializers.TrackSerializer import TrackSerializer
 from api.models.Track import Track
+from mutagen.mp3 import MP3
 
 
 class TrackView(APIView):
@@ -37,8 +38,20 @@ class TrackView(APIView):
                 "message": "File nhạc không được để trống."
             }, status=status.HTTP_400_BAD_REQUEST)
 
+        try:
+            # Dùng mutagen để lấy duration
+            audio = MP3(track_file)
+            duration = int(audio.info.length)
+        except Exception as e:
+            return Response({
+                "success": False,
+                "message": f"Lỗi khi đọc file nhạc: {str(e)}"
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        # Bổ sung thông tin vào data để lưu vào database
         data = request.data
-        data['file_path'] = track_file  # Thêm file vào request data
+        data['file_path'] = track_file
+        data['duration'] = duration
 
         serializer = TrackSerializer(data=data)
         if serializer.is_valid():
