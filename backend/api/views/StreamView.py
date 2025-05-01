@@ -7,8 +7,6 @@ import os
 from django.conf import settings
 from botocore.client import Config
 
-# Sửa hàm stream_mp3 để dùng cơ chế ký đúng
-
 
 def stream_mp3(request, filename):
     bucket_name = os.getenv('AWS_STORAGE_BUCKET_NAME')
@@ -20,7 +18,6 @@ def stream_mp3(request, filename):
         aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
         aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
         region_name=settings.AWS_S3_REGION_NAME,
-        # Đảm bảo sử dụng AWS4-HMAC-SHA256
         config=Config(signature_version='s3v4')
     )
 
@@ -66,8 +63,10 @@ def stream_mp3(request, filename):
         return response
 
     except ClientError as e:
-        # Nếu có lỗi, trả về thông báo lỗi với mã trạng thái 404
-        return HttpResponse(f"Lỗi: {e.response['Error']['Message']}", status=404)
+        # Nếu có lỗi, trả về thông báo lỗi với mã trạng thái 500 thay vì 404 để dễ dàng debug
+        error_message = e.response.get('Error', {}).get(
+            'Message', 'Lỗi không xác định')
+        return HttpResponse(f"Lỗi: {error_message}", status=500)
 
 
 # Hàm tạo pre-signed URL cho file
@@ -77,9 +76,7 @@ def generate_signed_url(file_key, expiration=420):  # 7 phút
         's3',
         aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
         aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-        # region_name=settings.AWS_S3_REGION_NAME,
         region_name=settings.AWS_S3_REGION_NAME,
-        # Đảm bảo sử dụng AWS4-HMAC-SHA256
         config=Config(signature_version='s3v4')
     )
 
