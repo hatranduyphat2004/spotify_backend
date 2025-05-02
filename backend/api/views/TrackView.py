@@ -38,6 +38,13 @@ class TrackView(APIView):
                 "message": "File nhạc không được để trống."
             }, status=status.HTTP_400_BAD_REQUEST)
 
+        img_file = request.FILES.get('img_path')
+        if not img_file:
+            return Response({
+                "success": False,
+                "message": "File ảnh không được để trống."
+            }, status=status.HTTP_400_BAD_REQUEST)
+
         try:
             # Dùng mutagen để lấy duration
             audio = MP3(track_file)
@@ -51,6 +58,7 @@ class TrackView(APIView):
         # Bổ sung thông tin vào data để lưu vào database
         data = request.data
         data['file_path'] = track_file
+        data['img_path'] = img_file
         data['duration'] = duration
 
         serializer = TrackSerializer(data=data)

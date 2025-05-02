@@ -9,6 +9,7 @@ class Track(models.Model):
         Album, on_delete=models.CASCADE, null=True, blank=True)
     duration = models.IntegerField(help_text="Duration in seconds")
     file_path = models.FileField(upload_to='tracks/', null=True, blank=True)
+    img_path = models.FileField(upload_to='imgs/', null=True, blank=True)
     track_number = models.PositiveIntegerField(null=True, blank=True)
     popularity = models.PositiveIntegerField(default=0)
     preview_url = models.URLField(blank=True)
@@ -16,6 +17,6 @@ class Track(models.Model):
 
     class Meta:
         db_table = 'track'
-    
+
     def __str__(self):
         return self.title
