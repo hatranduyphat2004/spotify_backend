@@ -71,7 +71,7 @@ class AuthView(APIView):
                 "message": "Làm mới access token thành công",
                 "data": {
                     "access": access,
-                    "refresh": refresh
+                    "refresh": str(refresh)
                 }
             }, status=status.HTTP_200_OK)
         except TokenError as e:

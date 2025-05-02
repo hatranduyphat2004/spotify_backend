@@ -6,17 +6,20 @@ from api.views.AlbumView import AlbumView
 from api.views.TrackView import TrackView
 from api.views.FolderView import FolderView
 from api.views.GenreView import GenreView
-
 from api.views.ConversationView import ConversationListView, ConversationCreateView, DeleteConversationView
 from api.views.ConversationMemberView import AddConversationMemberView
 from api.views.MessageView import ConversationMessageHistoryView, MarkMessageAsReadView, DeleteMessageView, SendMessageView
-
 from api.views.TransactionView import TransactionView
 from api.views.SubscriptionPlanView import SubscriptionPlanView
 from api.views.TransactionByOrderCodeView import TransactionByOrderCodeView
+from api.views.StreamView import stream_mp3
+from api.views.StreamView import get_audio_url
 
 
 urlpatterns = [
+    path('presigned-url/<str:filename>/', get_audio_url),
+    # Stream track
+    path('stream/<str:filename>/', stream_mp3, name='stream_mp3'),
     # Auth
     path('auth/<str:action>/', AuthView.as_view(), name='auth-action'),
     # Artist

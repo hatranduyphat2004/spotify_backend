@@ -201,13 +201,15 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'USER_ID_FIELD': 'id',  # ✅ Chỉ định đúng trường khóa chính
     # Thời gian sống của Access Token
-    "ACCESS_TOKEN_LIFETIME": timedelta(days= 10),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+  
     # Thời gian sống của Refresh Token
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
     "AUTH_HEADER_TYPES": ("Bearer",),  # Header bắt đầu bằng "Bearer <token>"
 }
+
 CORS_ALLOW_ALL_ORIGINS = True  # Chấp nhận tất cả domain
 CORS_ALLOW_CREDENTIALS = True
 
@@ -243,6 +245,5 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
 
-MOMO_ACCESS_KEY = "your_momo_access_key"
-MOMO_PARTNER_CODE = "your_momo_partner_code"
-MOMO_SECRET_KEY = "your_momo_secret_key"
+MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+

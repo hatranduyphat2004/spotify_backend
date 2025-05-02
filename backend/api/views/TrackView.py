@@ -5,10 +5,16 @@ from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from api.serializers.TrackSerializer import TrackSerializer
 from api.models.Track import Track
+from mutagen.mp3 import MP3
 
 
 class TrackView(APIView):
-    permission_classes = [IsAuthenticated]  # Yêu cầu xác thực JWT
+
+    def get_permissions(self):
+        """Chỉ yêu cầu xác thực cho các phương thức POST, PUT, DELETE"""
+        if self.request.method in ['POST', 'PUT', 'DELETE']:
+            return [IsAuthenticated()]
+        return []  # Không yêu cầu xác thực cho phương thức GET
 
     def get(self, request, pk=None):
         """Lấy danh sách tất cả tracks hoặc một track cụ thể."""
@@ -25,7 +31,6 @@ class TrackView(APIView):
 
     def post(self, request):
         """Thêm một track mới và tải file lên S3."""
-        # Kiểm tra và lấy file nhạc từ request
         track_file = request.FILES.get('file_path')
         if not track_file:
             return Response({
@@ -33,13 +38,31 @@ class TrackView(APIView):
                 "message": "File nhạc không được để trống."
             }, status=status.HTTP_400_BAD_REQUEST)
 
-        # Tạo track mới từ dữ liệu request
+        img_file = request.FILES.get('img_path')
+        if not img_file:
+            return Response({
+                "success": False,
+                "message": "File ảnh không được để trống."
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Dùng mutagen để lấy duration
+            audio = MP3(track_file)
+            duration = int(audio.info.length)
+        except Exception as e:
+            return Response({
+                "success": False,
+                "message": f"Lỗi khi đọc file nhạc: {str(e)}"
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        # Bổ sung thông tin vào data để lưu vào database
         data = request.data
-        data['file_path'] = track_file  # Thêm file vào request data
+        data['file_path'] = track_file
+        data['img_path'] = img_file
+        data['duration'] = duration
 
         serializer = TrackSerializer(data=data)
         if serializer.is_valid():
-            # Lưu track vào cơ sở dữ liệu, bao gồm file tải lên S3
             track = serializer.save()
             return Response({
                 "success": True,
@@ -57,7 +80,6 @@ class TrackView(APIView):
         """Cập nhật thông tin track theo ID, bao gồm cập nhật file nhạc nếu có."""
         track = get_object_or_404(Track, pk=pk)
 
-        # Nếu có file mới được gửi trong request
         if 'file_path' in request.FILES:
             request.data['file_path'] = request.FILES['file_path']
 
