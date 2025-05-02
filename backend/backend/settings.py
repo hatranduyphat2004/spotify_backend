@@ -242,3 +242,7 @@ CSRF_TRUSTED_ORIGINS = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
+
+MOMO_ACCESS_KEY = "your_momo_access_key"
+MOMO_PARTNER_CODE = "your_momo_partner_code"
+MOMO_SECRET_KEY = "your_momo_secret_key"

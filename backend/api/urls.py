@@ -11,6 +11,11 @@ from api.views.ConversationView import ConversationListView, ConversationCreateV
 from api.views.ConversationMemberView import AddConversationMemberView
 from api.views.MessageView import ConversationMessageHistoryView, MarkMessageAsReadView, DeleteMessageView, SendMessageView
 
+from api.views.TransactionView import TransactionView
+from api.views.SubscriptionPlanView import SubscriptionPlanView
+from api.views.TransactionByOrderCodeView import TransactionByOrderCodeView
+
+
 urlpatterns = [
     # Auth
     path('auth/<str:action>/', AuthView.as_view(), name='auth-action'),
@@ -23,6 +28,7 @@ urlpatterns = [
     path('users/', UserView.as_view(), name='user_list'),  # GET (all), POST
     path('users/<int:pk>/', UserView.as_view(),
          name='user_detail'),  # GET (one), PUT, DELETE
+
     # Album
     path('albums/', AlbumView.as_view(), name='album_list'),  # GET (all), POST
     path('albums/<int:pk>/', AlbumView.as_view(),
@@ -62,5 +68,14 @@ urlpatterns = [
     # Conversation Member
     path('conversations/<int:conversation_id>/add-member/',
          AddConversationMemberView.as_view(), name='add-conversation-member'),
+    
+    path('transactions/', TransactionView.as_view()),
+    path('transactions/<int:pk>/', TransactionView.as_view()),
+    path('plans/', SubscriptionPlanView.as_view()),
+    path('plans/<int:pk>/', SubscriptionPlanView.as_view()),
+#     path('payment-callback/', PayOSWebhookView.as_view(), name='payos-callback'),
+    path('transactions/by-order-code/<int:order_code>/', TransactionByOrderCodeView.as_view()),
+
+    
 
 ]
