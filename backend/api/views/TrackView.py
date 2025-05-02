@@ -7,6 +7,7 @@ from api.serializers.TrackSerializer import TrackSerializer
 from api.models.Track import Track
 from api.models.ArtistTrack import ArtistTrack
 from api.models.Artist import Artist
+from mutagen.mp3 import MP3
 
 
 class TrackView(APIView):
@@ -98,7 +99,7 @@ class TrackView(APIView):
         # Xử lý is_active
         if 'is_active' in data:
             data['is_active'] = bool(data['is_active'])
-
+            
         serializer = TrackSerializer(data=data)
         if serializer.is_valid():
             track = serializer.save()
