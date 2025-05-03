@@ -109,7 +109,7 @@ DATABASES = {
         'USER': 'root',  # Tài khoản MySQL
         'PASSWORD': '',  # Mật khẩu MySQL
         'HOST': 'localhost',  # Nếu dùng máy chủ từ xa, thay bằng IP
-        'PORT': '2434',  # Cổng của P
+        'PORT': '3306',  # Cổng của P
         'OPTIONS': {
             'charset': 'utf8mb4',  # Hỗ trợ Unicode đầy đủ
         },

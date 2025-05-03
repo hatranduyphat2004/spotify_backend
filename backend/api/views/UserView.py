@@ -70,3 +70,28 @@ class UserView(APIView):
             "success": True,
             "message": "Người dùng đã được xoá thành công"
         }, status=status.HTTP_204_NO_CONTENT)
+
+    # đếm tổng số lượng người dùng
+    def get(self, request, pk=None):
+        """Lấy danh sách user hoặc một user cụ thể."""
+        if pk == "count":
+            total_users = User.objects.count()
+            return Response({
+                "success": True,
+                "total_users": total_users
+            }, status=status.HTTP_200_OK)
+
+        if pk:
+            user = get_object_or_404(User, pk=pk)
+            serializer = UserSerializer(user)
+            return Response({
+                "success": True,
+                "data": serializer.data
+            }, status=status.HTTP_200_OK)
+        else:
+            users = User.objects.all()
+            serializer = UserSerializer(users, many=True)
+            return Response({
+                "success": True,
+                "data": serializer.data
+            }, status=status.HTTP_200_OK)

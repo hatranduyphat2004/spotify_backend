@@ -3,8 +3,11 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
+
+from api.models import TrackListen
 from api.serializers.TrackSerializer import TrackSerializer
 from api.models.Track import Track
+from rest_framework.decorators import action
 
 
 class TrackView(APIView):
@@ -14,14 +17,22 @@ class TrackView(APIView):
         """Lấy danh sách tất cả tracks hoặc một track cụ thể."""
         if pk:
             track = get_object_or_404(Track, pk=pk)
+
+            # Ghi nhận lượt nghe mỗi khi người dùng nghe bài hát
+            TrackListen.objects.create(user=request.user, track=track)
+
             serializer = TrackSerializer(track)
+            return Response({
+                "success": True,
+                "data": serializer.data
+            }, status=status.HTTP_200_OK)
         else:
             tracks = Track.objects.all()
             serializer = TrackSerializer(tracks, many=True)
-        return Response({
-            "success": True,
-            "data": serializer.data
-        }, status=status.HTTP_200_OK)
+            return Response({
+                "success": True,
+                "data": serializer.data
+            }, status=status.HTTP_200_OK)
 
     def post(self, request):
         """Thêm một track mới và tải file lên S3."""
@@ -84,3 +95,20 @@ class TrackView(APIView):
             "success": True,
             "message": "Track đã được xóa thành công"
         }, status=status.HTTP_204_NO_CONTENT)
+
+    # Total Songs
+    def getTotalSongs(self, request):
+        """Trả về tổng số lượng bài hát (track)."""
+        total = Track.objects.count()
+        return Response({
+            "success": True,
+            "total": total
+        }, status=status.HTTP_200_OK)
+    # Total Listen
+    def getTotalListens(self, request):
+        """Trả về tổng số lượt nghe của tất cả bài hát."""
+        total_listens = TrackListen.objects.count()
+        return Response({
+            "success": True,
+            "total_listens": total_listens
+        }, status=status.HTTP_200_OK)

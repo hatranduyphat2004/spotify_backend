@@ -1,3 +1,4 @@
+from rest_framework.decorators import action
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -103,3 +104,12 @@ class ArtistView(APIView):
             "success": True,
             "message": "Nghệ sĩ đã được xoá thành công"
         }, status=status.HTTP_204_NO_CONTENT)
+    # Total Artists
+    @action(detail=False, methods=['get'])
+    def count(self, request):
+        """Lấy tổng số artist."""
+        total = Artist.objects.count()
+        return Response({
+            "success": True,
+            "total": total
+        }, status=status.HTTP_200_OK)

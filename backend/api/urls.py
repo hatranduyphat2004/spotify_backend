@@ -19,10 +19,12 @@ urlpatterns = [
          name='artist_list'),  # GET (all), POST
     path('artists/<int:pk>/', ArtistView.as_view(),
          name='artist_detail'),  # GET (one), PUT, DELETE
+    path('artists/count/', ArtistView.as_view(), name='artist-count'),
     # User
     path('users/', UserView.as_view(), name='user_list'),  # GET (all), POST
     path('users/<int:pk>/', UserView.as_view(),
          name='user_detail'),  # GET (one), PUT, DELETE
+    path('users/<str:pk>/', UserView.as_view()), # count user
     # Album
     path('albums/', AlbumView.as_view(), name='album_list'),  # GET (all), POST
     path('albums/<int:pk>/', AlbumView.as_view(),
@@ -31,6 +33,8 @@ urlpatterns = [
     path('tracks/', TrackView.as_view(), name='track_list'),  # GET (all), POST
     path('tracks/<int:pk>/', TrackView.as_view(),
          name='track_detail'),  # GET (one), PUT, DELETE
+    path('tracks/count/', TrackView.as_view()), # Get Total Songs
+    path('listen/count/', TrackView.as_view(), name='total-listens'),
     # Folder
     path('folders/', FolderView.as_view(),
          name='folder_list'),  # GET (all), POST
