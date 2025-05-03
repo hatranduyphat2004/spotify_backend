@@ -2,16 +2,22 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from api.serializers.TrackSerializer import TrackSerializer
 from api.models.Track import Track
 from api.models.ArtistTrack import ArtistTrack
 from api.models.Artist import Artist
+
 from mutagen.mp3 import MP3
+from mutagen import MutagenError
+import tempfile
 
 
 class TrackView(APIView):
-    permission_classes = [IsAuthenticated]
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [AllowAny()]
+        return [IsAuthenticated()]
 
     def get(self, request, pk=None):
         """Lấy danh sách tất cả tracks hoặc một track cụ thể."""
@@ -33,7 +39,7 @@ class TrackView(APIView):
         print("POST request FILES:", request.FILES)
         
         # Kiểm tra các trường bắt buộc
-        required_fields = ['title', 'duration', 'artist_id']
+        required_fields = ['title', 'artist_id']
         for field in required_fields:
             if field not in request.data:
                 return Response({
@@ -70,7 +76,7 @@ class TrackView(APIView):
             }, status=status.HTTP_400_BAD_REQUEST)
 
         # Chuẩn bị dữ liệu
-        data = request.data.copy()
+        data = request.data
         data['file_path'] = track_file
         if img_file:
             data['img_path'] = img_file
@@ -81,11 +87,24 @@ class TrackView(APIView):
 
         # Xử lý duration
         try:
-            data['duration'] = int(data['duration'])
-        except (ValueError, TypeError):
+            with tempfile.NamedTemporaryFile(delete=False, suffix='.mp3') as temp_file:
+                for chunk in track_file.chunks():
+                    temp_file.write(chunk)
+                temp_file.flush()
+
+                audio = MP3(temp_file.name)
+                duration_seconds = int(audio.info.length)
+                data['duration'] = duration_seconds
+
+        except MutagenError:
             return Response({
                 "success": False,
-                "message": "Duration phải là số nguyên"
+                "message": "Không thể phân tích file mp3. File có thể bị lỗi."
+            }, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({
+                "success": False,
+                "message": f"Lỗi khi xử lý file mp3: {str(e)}"
             }, status=status.HTTP_400_BAD_REQUEST)
 
         # Xử lý track_number
@@ -116,13 +135,11 @@ class TrackView(APIView):
         # Xử lý is_active
         if 'is_active' in data:
             data['is_active'] = bool(data['is_active'])
-            
-        print("Processed data before serialization:", data)
-        
+
         serializer = TrackSerializer(data=data)
         if serializer.is_valid():
             track = serializer.save()
-            
+
             # Tạo ArtistTrack
             ArtistTrack.objects.create(
                 artist=artist,

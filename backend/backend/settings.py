@@ -202,7 +202,7 @@ SIMPLE_JWT = {
     'USER_ID_FIELD': 'id',  # ✅ Chỉ định đúng trường khóa chính
     # Thời gian sống của Access Token
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
-  
+
     # Thời gian sống của Refresh Token
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "ROTATE_REFRESH_TOKENS": True,
@@ -246,4 +246,3 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
-
