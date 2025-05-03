@@ -116,30 +116,30 @@ DATABASES = {
     # }
 
     # Luan
-#      'default': {
-#         'ENGINE': 'django.db.backends.mysql',  # Sử dụng MySQL
-#         'NAME': 'spotify',  # Thay bằng tên database của bạn
-#         'USER': 'root',  # Tài khoản MySQL
-#         'PASSWORD': '1234',  # Mật khẩu MySQL
-#         'HOST': '127.0.0.1',  # Nếu dùng máy chủ từ xa, thay bằng IP
-#         'PORT': '3306',  # Cổng của MySQL
-#         'OPTIONS': {
-#             'charset': 'utf8mb4',  # Hỗ trợ Unicode đầy đủ
-#         },
-#     }
-
-    # minh
-    'default': {
+     'default': {
         'ENGINE': 'django.db.backends.mysql',  # Sử dụng MySQL
-        'NAME': 'backend_spotify',  # Thay bằng tên database của bạn
+        'NAME': 'spotify',  # Thay bằng tên database của bạn
         'USER': 'root',  # Tài khoản MySQL
-        'PASSWORD': '',  # Mật khẩu MySQL
-        'HOST': 'localhost',  # Nếu dùng máy chủ từ xa, thay bằng IP
-        'PORT': '3306',  # Cổng của P
+        'PASSWORD': '1234',  # Mật khẩu MySQL
+        'HOST': '127.0.0.1',  # Nếu dùng máy chủ từ xa, thay bằng IP
+        'PORT': '3306',  # Cổng của MySQL
         'OPTIONS': {
             'charset': 'utf8mb4',  # Hỗ trợ Unicode đầy đủ
         },
     }
+
+    # minh
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',  # Sử dụng MySQL
+    #     'NAME': 'backend_spotify',  # Thay bằng tên database của bạn
+    #     'USER': 'root',  # Tài khoản MySQL
+    #     'PASSWORD': '',  # Mật khẩu MySQL
+    #     'HOST': 'localhost',  # Nếu dùng máy chủ từ xa, thay bằng IP
+    #     'PORT': '3306',  # Cổng của P
+    #     'OPTIONS': {
+    #         'charset': 'utf8mb4',  # Hỗ trợ Unicode đầy đủ
+    #     },
+    # }
 }
 
 
