@@ -7,6 +7,7 @@ from api.serializers.TrackSerializer import TrackSerializer
 from api.models.Track import Track
 from api.models.ArtistTrack import ArtistTrack
 from api.models.Artist import Artist
+from rest_framework.parsers import MultiPartParser, FormParser
 
 from mutagen.mp3 import MP3
 from mutagen import MutagenError
@@ -14,6 +15,8 @@ import tempfile
 
 
 class TrackView(APIView):
+    # parser_classes = (MultiPartParser, FormParser)
+
     def get_permissions(self):
         if self.request.method == 'GET':
             return [AllowAny()]
@@ -35,6 +38,9 @@ class TrackView(APIView):
     def post(self, request):
         """Thêm một track mới và tải file lên S3."""
         # Kiểm tra các trường bắt buộc
+
+        print("Request files:", request.FILES)
+        print("Request data:", request.data)
         required_fields = ['title', 'artist_id']
         for field in required_fields:
             if field not in request.data:
@@ -60,9 +66,18 @@ class TrackView(APIView):
                 "message": "Artist không tồn tại."
             }, status=status.HTTP_400_BAD_REQUEST)
 
-        # Chuẩn bị dữ liệu
+        # Xử lý file ảnh nếu có
+        img_file = request.FILES.get('img_path')
+        if not img_file:
+            return Response({
+                "success": False,
+                "message": "File ảnh không được để trống."
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+    # Chuẩn bị dữ liệu
         data = request.data
         data['file_path'] = track_file
+        data['img_path'] = img_file
 
         # Xử lý album
         if 'album' in data and data['album'] == 'none':
@@ -119,6 +134,8 @@ class TrackView(APIView):
         if 'is_active' in data:
             data['is_active'] = bool(data['is_active'])
 
+        print("Data:", data)
+
         serializer = TrackSerializer(data=data)
         if serializer.is_valid():
             track = serializer.save()
@@ -152,6 +169,10 @@ class TrackView(APIView):
         # Xử lý file nhạc nếu có
         if 'file_path' in request.FILES:
             data['file_path'] = request.FILES['file_path']
+
+        # Xử lý file ảnh nếu có
+        if 'img_path' in request.FILES:
+            data['img_path'] = request.FILES['img_path']
 
         # Xử lý album
         if 'album' in data and data['album'] == 'none':
