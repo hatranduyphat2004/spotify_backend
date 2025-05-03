@@ -14,6 +14,7 @@ from api.views.SubscriptionPlanView import SubscriptionPlanView
 from api.views.TransactionByOrderCodeView import TransactionByOrderCodeView
 from api.views.StreamView import stream_mp3
 from api.views.StreamView import get_audio_url
+from api.views.ArtistTrackView import ArtistTrackView, ArtistTrackByTrackView, ArtistTrackByArtistView
 
 
 urlpatterns = [
@@ -79,6 +80,10 @@ urlpatterns = [
 #     path('payment-callback/', PayOSWebhookView.as_view(), name='payos-callback'),
     path('transactions/by-order-code/<int:order_code>/', TransactionByOrderCodeView.as_view()),
 
-    
+    # Artist-Track
+    path('artist-tracks/', ArtistTrackView.as_view(), name='artist-track-list'),
+    path('artist-tracks/<int:pk>/', ArtistTrackView.as_view(), name='artist-track-detail'),
+    path('artist-tracks/track/<int:track_id>/', ArtistTrackByTrackView.as_view(), name='artist-track-by-track'),
+    path('artist-tracks/artist/<int:artist_id>/', ArtistTrackByArtistView.as_view(), name='artist-track-by-artist'),
 
 ]

@@ -7,6 +7,7 @@ from api.serializers.TrackSerializer import TrackSerializer
 from api.models.Track import Track
 from api.models.ArtistTrack import ArtistTrack
 from api.models.Artist import Artist
+from rest_framework.parsers import MultiPartParser, FormParser
 
 from mutagen.mp3 import MP3
 from mutagen import MutagenError
@@ -14,6 +15,8 @@ import tempfile
 
 
 class TrackView(APIView):
+    # parser_classes = (MultiPartParser, FormParser)
+
     def get_permissions(self):
         if self.request.method == 'GET':
             return [AllowAny()]
@@ -21,7 +24,6 @@ class TrackView(APIView):
 
     def get(self, request, pk=None):
         """Lấy danh sách tất cả tracks hoặc một track cụ thể."""
-        print("GET request data:", request.data)
         if pk:
             track = get_object_or_404(Track, pk=pk)
             serializer = TrackSerializer(track)
@@ -35,10 +37,10 @@ class TrackView(APIView):
 
     def post(self, request):
         """Thêm một track mới và tải file lên S3."""
-        print("POST request data:", request.data)
-        print("POST request FILES:", request.FILES)
-        
         # Kiểm tra các trường bắt buộc
+
+        print("Request files:", request.FILES)
+        print("Request data:", request.data)
         required_fields = ['title', 'artist_id']
         for field in required_fields:
             if field not in request.data:
@@ -55,17 +57,6 @@ class TrackView(APIView):
                 "message": "File nhạc không được để trống."
             }, status=status.HTTP_400_BAD_REQUEST)
 
-        # Kiểm tra file ảnh nếu có
-        img_file = request.FILES.get('img_path')
-        if img_file:
-            # Kiểm tra định dạng file ảnh
-            allowed_image_types = ['image/jpeg', 'image/png', 'image/gif']
-            if img_file.content_type not in allowed_image_types:
-                return Response({
-                    "success": False,
-                    "message": "File ảnh phải có định dạng JPEG, PNG hoặc GIF."
-                }, status=status.HTTP_400_BAD_REQUEST)
-
         # Kiểm tra artist tồn tại
         try:
             artist = Artist.objects.get(pk=request.data['artist_id'])
@@ -75,11 +66,18 @@ class TrackView(APIView):
                 "message": "Artist không tồn tại."
             }, status=status.HTTP_400_BAD_REQUEST)
 
-        # Chuẩn bị dữ liệu
+        # Xử lý file ảnh nếu có
+        img_file = request.FILES.get('img_path')
+        if not img_file:
+            return Response({
+                "success": False,
+                "message": "File ảnh không được để trống."
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+    # Chuẩn bị dữ liệu
         data = request.data
         data['file_path'] = track_file
-        if img_file:
-            data['img_path'] = img_file
+        data['img_path'] = img_file
 
         # Xử lý album
         if 'album' in data and data['album'] == 'none':
@@ -136,6 +134,8 @@ class TrackView(APIView):
         if 'is_active' in data:
             data['is_active'] = bool(data['is_active'])
 
+        print("Data:", data)
+
         serializer = TrackSerializer(data=data)
         if serializer.is_valid():
             track = serializer.save()
@@ -161,9 +161,6 @@ class TrackView(APIView):
 
     def put(self, request, pk):
         """Cập nhật thông tin track theo ID, bao gồm cập nhật file nhạc nếu có."""
-        print("PUT request data:", request.data)
-        print("PUT request FILES:", request.FILES)
-        
         track = get_object_or_404(Track, pk=pk)
 
         # Chuẩn bị dữ liệu
@@ -175,15 +172,7 @@ class TrackView(APIView):
 
         # Xử lý file ảnh nếu có
         if 'img_path' in request.FILES:
-            img_file = request.FILES['img_path']
-            # Kiểm tra định dạng file ảnh
-            allowed_image_types = ['image/jpeg', 'image/png', 'image/gif']
-            if img_file.content_type not in allowed_image_types:
-                return Response({
-                    "success": False,
-                    "message": "File ảnh phải có định dạng JPEG, PNG hoặc GIF."
-                }, status=status.HTTP_400_BAD_REQUEST)
-            data['img_path'] = img_file
+            data['img_path'] = request.FILES['img_path']
 
         # Xử lý album
         if 'album' in data and data['album'] == 'none':
@@ -223,8 +212,6 @@ class TrackView(APIView):
         if 'is_active' in data:
             data['is_active'] = bool(data['is_active'])
 
-        print("Processed data before serialization:", data)
-
         serializer = TrackSerializer(track, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -242,7 +229,6 @@ class TrackView(APIView):
 
     def delete(self, request, pk):
         """Xoá track theo ID."""
-        print("DELETE request data:", request.data)
         track = get_object_or_404(Track, pk=pk)
         track.delete()
         return Response({
