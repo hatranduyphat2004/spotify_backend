@@ -1,7 +1,6 @@
 from django.db import models
 from .Album import Album
-
-
+from django.utils import timezone
 class Track(models.Model):
     track_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=255)
@@ -14,9 +13,11 @@ class Track(models.Model):
     popularity = models.PositiveIntegerField(default=0)
     preview_url = models.URLField(blank=True)
     is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(default=timezone.now)
 
     class Meta:
         db_table = 'track'
-
+        ordering = ['-created_at']
+    
     def __str__(self):
         return self.title
