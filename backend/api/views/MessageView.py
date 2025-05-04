@@ -4,7 +4,9 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
-from api.models import Message, Conversation
+from api.models.Message import Message
+from api.models.Conversation import Conversation
+from api.models.ConversationMember import ConversationMember
 from api.serializers.MessageSerializer import MessageSerializer
 
 # Lấy lịch sử tin nhắn của một cuộc trò chuyện
@@ -16,7 +18,10 @@ class ConversationMessageHistoryView(APIView):
         conversation = get_object_or_404(Conversation, conversation_id=conversation_id, is_active=True)
         messages = Message.objects.filter(conversation=conversation, is_active=True)
         message_serializer = MessageSerializer(messages, many=True)
-        return Response(message_serializer.data, status=status.HTTP_200_OK)
+        return Response({
+                "success": True,
+                "data": message_serializer.data
+            }, status=status.HTTP_200_OK)
 
 # Đánh dấu tin nhắn đã đọc
 class MarkMessageAsReadView(APIView):
@@ -37,24 +42,29 @@ class SendMessageView(APIView):
         """Gửi một tin nhắn mới trong cuộc trò chuyện"""
         conversation = get_object_or_404(Conversation, conversation_id=conversation_id, is_active=True)
         
-        # Lấy dữ liệu tin nhắn từ request
         message_content = request.data.get("message")
-        
         if not message_content:
             return Response({"error": "Message content is required."}, status=status.HTTP_400_BAD_REQUEST)
-        
-        # Tạo một tin nhắn mới
+
+        # (Tuỳ chọn) Kiểm tra xem user có phải là thành viên của conversation không
+        if not ConversationMember.objects.filter(conversation=conversation, user=request.user).exists():
+            return Response({"error": "You are not a member of this conversation."}, status=status.HTTP_403_FORBIDDEN)
+
+        # Gán sender là request.user (User model)
         message = Message.objects.create(
             conversation=conversation,
-            sender=request.user,  # Người gửi là người đã đăng nhập
-            message=message_content,
+            sender=request.user,
+            content=message_content,
             is_active=True
         )
-        
-        # Serialize dữ liệu để trả về
+
         message_serializer = MessageSerializer(message)
-        
-        return Response(message_serializer.data, status=status.HTTP_201_CREATED)
+        return Response({
+                "success": True,
+                "data": message_serializer.data
+            }, status=status.HTTP_200_OK)
+
+
 
 # Xoá tin nhắn
 class DeleteMessageView(APIView):

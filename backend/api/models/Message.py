@@ -1,15 +1,16 @@
 from django.db import models
-from .ConversationMember import ConversationMember
+from .User import User
+from .Conversation import Conversation
 
 class Message(models.Model):
     message_id = models.AutoField(primary_key=True)
     conversation = models.ForeignKey(
-        ConversationMember,
+        Conversation,
         on_delete=models.CASCADE,
         related_name='conversation_messages'
     )
     sender = models.ForeignKey(
-        ConversationMember,
+        User,
         on_delete=models.CASCADE,
         related_name='sent_messages'
     )

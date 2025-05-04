@@ -134,7 +134,7 @@ DATABASES = {
         'NAME': 'backend_spotify',  # Thay bằng tên database của bạn
         'USER': 'root',  # Tài khoản MySQL
         'PASSWORD': '',  # Mật khẩu MySQL
-        'HOST': 'localhost',  # Nếu dùng máy chủ từ xa, thay bằng IP
+        'HOST': '127.0.0.1',  # Nếu dùng máy chủ từ xa, thay bằng IP
         'PORT': '3306',  # Cổng của P
         'OPTIONS': {
             'charset': 'utf8mb4',  # Hỗ trợ Unicode đầy đủ
@@ -210,7 +210,7 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),  # Header bắt đầu bằng "Bearer <token>"
 }
 
-CORS_ALLOW_ALL_ORIGINS = True  # Chấp nhận tất cả domain
+# CORS_ALLOW_ALL_ORIGINS = True  # Chấp nhận tất cả domain
 CORS_ALLOW_CREDENTIALS = True
 
 
