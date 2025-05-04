@@ -22,18 +22,49 @@ class TrackView(APIView):
             return [AllowAny()]
         return [IsAuthenticated()]
 
-    def get(self, request, pk=None):
-        """Lấy danh sách tất cả tracks hoặc một track cụ thể."""
-        if pk:
-            track = get_object_or_404(Track, pk=pk)
-            serializer = TrackSerializer(track)
-        else:
-            tracks = Track.objects.all()
+    def get(self, request, pk=None, album_id=None):
+        """Lấy danh sách tracks theo điều kiện."""
+        try:
+            if album_id is not None:
+                # Lấy danh sách track của một album
+                tracks = Track.objects.filter(album=album_id)
+            elif pk:
+                # Lấy một track cụ thể
+                track = get_object_or_404(Track, pk=pk)
+                serializer = TrackSerializer(track)
+                return Response({
+                    "success": True,
+                    "data": serializer.data
+                }, status=status.HTTP_200_OK)
+            else:
+                # Lấy tất cả tracks
+                tracks = Track.objects.all()
+
             serializer = TrackSerializer(tracks, many=True)
-        return Response({
-            "success": True,
-            "data": serializer.data
-        }, status=status.HTTP_200_OK)
+            return Response({
+                "success": True,
+                "data": serializer.data
+            }, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({
+                "success": False,
+                "message": str(e)
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+    def get_by_album(self, request, album_id):
+        """Lấy danh sách track của một album."""
+        try:
+            tracks = Track.objects.filter(album=album_id)
+            serializer = TrackSerializer(tracks, many=True)
+            return Response({
+                "success": True,
+                "data": serializer.data
+            }, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({
+                "success": False,
+                "message": str(e)
+            }, status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request):
         """Thêm một track mới và tải file lên S3."""
