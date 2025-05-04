@@ -46,6 +46,44 @@ class UserView(APIView):
         }, status=status.HTTP_400_BAD_REQUEST)
 
     def put(self, request, pk):
+        """Xử lý các request PUT."""
+        if request.path.endswith('/suspend/'):
+            return self.suspend(request, pk)
+        elif request.path.endswith('/active/'):
+            return self.active(request, pk)
+        else:
+            return self.update(request, pk)
+
+    def delete(self, request, pk):
+        """Xoá user theo ID."""
+        user = get_object_or_404(User, pk=pk)
+        user.delete()
+        return Response({
+            "success": True,
+            "message": "Người dùng đã được xoá thành công"
+        }, status=status.HTTP_204_NO_CONTENT)
+
+    def suspend(self, request, pk):
+        """Tạm dừng tài khoản user."""
+        user = get_object_or_404(User, pk=pk)
+        user.is_active = False
+        user.save()
+        return Response({
+            "success": True,
+            "message": "Tài khoản đã được tạm dừng thành công"
+        }, status=status.HTTP_200_OK)
+    
+    def active(self, request, pk):
+        """Kích hoạt tài khoản user."""
+        user = get_object_or_404(User, pk=pk)
+        user.is_active = True
+        user.save()
+        return Response({
+            "success": True,
+            "message": "Tài khoản đã được kích hoạt thành công"
+        }, status=status.HTTP_200_OK)   
+
+    def update(self, request, pk):
         """Cập nhật user theo ID."""
         user = get_object_or_404(User, pk=pk)
         serializer = UserSerializer(user, data=request.data, partial=True)
@@ -61,12 +99,3 @@ class UserView(APIView):
             "message": "Dữ liệu không hợp lệ",
             "errors": serializer.errors
         }, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, pk):
-        """Xoá user theo ID."""
-        user = get_object_or_404(User, pk=pk)
-        user.delete()
-        return Response({
-            "success": True,
-            "message": "Người dùng đã được xoá thành công"
-        }, status=status.HTTP_204_NO_CONTENT)
