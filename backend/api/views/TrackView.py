@@ -73,11 +73,21 @@ class TrackView(APIView):
         # Kiểm tra các trường bắt buộc
         required_fields = ['title', 'artist_id[]']
         for field in required_fields:
-            if field not in request.data:
+            value = request.data.get(field)
+            print(f">>>>>>>>>>>>>>>{value}")
+            if value in [None, '', [], 'null']:
                 return Response({
                     "success": False,
                     "message": f"Thiếu trường bắt buộc: {field}"
                 }, status=status.HTTP_400_BAD_REQUEST)
+
+        artist_ids_rq = request.data.getlist('artist_ids', [])
+        artist_ids = [int(i) for i in artist_ids_rq if i]
+        if not artist_ids:
+            return Response({
+                "success": False,
+                "message": "Phải cung cấp ít nhất 1 artist_id"
+            }, status=status.HTTP_400_BAD_REQUEST)
 
         # Kiểm tra file/video nhạc
         track_file = request.FILES.get('file_path')
@@ -184,8 +194,6 @@ class TrackView(APIView):
         if 'is_active' in data:
             data['is_active'] = bool(data['is_active'])
 
-        print("Data:", data)
-
         serializer = TrackSerializer(data=data)
         if serializer.is_valid():
             track = serializer.save()
@@ -195,7 +203,8 @@ class TrackView(APIView):
                 ArtistTrack.objects.create(
                     artist=artist,
                     track=track,
-                    role='primary' if i == 0 else 'featured'  # Artist đầu tiên là primary, còn lại là featured
+                    # Artist đầu tiên là primary, còn lại là featured
+                    role='primary' if i == 0 else 'featured'
                 )
 
             return Response({
