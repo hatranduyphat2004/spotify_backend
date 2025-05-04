@@ -102,6 +102,20 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
+    # production
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',  # Sử dụng MySQL
+    #     'NAME': os.getenv('AWS_RSD_NAME'),  # Thay bằng tên database của bạn
+    #     'USER': os.getenv('AWS_RDS_USER'),  # Tài khoản MySQL
+    #     'PASSWORD': os.getenv('AWS_RDS_PASSWORD'),  # Mật khẩu MySQL
+    #     # Nếu dùng máy chủ từ xa, thay bằng IP
+    #     'HOST': os.getenv('AWS_RDS_HOST'),
+    #     'PORT': os.getenv('AWS_RDS_PORT'),  # Cổng của P
+    #     'OPTIONS': {
+    #         'charset': 'utf8mb4',  # Hỗ trợ Unicode đầy đủ
+    #     },
+    # }
+
     # phat
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # Sử dụng MySQL
@@ -116,17 +130,17 @@ DATABASES = {
     }
 
     # Luan
-#      'default': {
-#         'ENGINE': 'django.db.backends.mysql',  # Sử dụng MySQL
-#         'NAME': 'spotify',  # Thay bằng tên database của bạn
-#         'USER': 'root',  # Tài khoản MySQL
-#         'PASSWORD': '1234',  # Mật khẩu MySQL
-#         'HOST': '127.0.0.1',  # Nếu dùng máy chủ từ xa, thay bằng IP
-#         'PORT': '3306',  # Cổng của MySQL
-#         'OPTIONS': {
-#             'charset': 'utf8mb4',  # Hỗ trợ Unicode đầy đủ
-#         },
-#     }
+    #      'default': {
+    #         'ENGINE': 'django.db.backends.mysql',  # Sử dụng MySQL
+    #         'NAME': 'spotify',  # Thay bằng tên database của bạn
+    #         'USER': 'root',  # Tài khoản MySQL
+    #         'PASSWORD': '1234',  # Mật khẩu MySQL
+    #         'HOST': '127.0.0.1',  # Nếu dùng máy chủ từ xa, thay bằng IP
+    #         'PORT': '3306',  # Cổng của MySQL
+    #         'OPTIONS': {
+    #             'charset': 'utf8mb4',  # Hỗ trợ Unicode đầy đủ
+    #         },
+    #     }
 
     # minh
     # 'default': {
