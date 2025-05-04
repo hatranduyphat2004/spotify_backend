@@ -32,6 +32,11 @@ urlpatterns = [
     path('users/', UserView.as_view(), name='user_list'),  # GET (all), POST
     path('users/<int:pk>/', UserView.as_view(),
          name='user_detail'),  # GET (one), PUT, DELETE
+    path('users/<int:pk>/suspend/', UserView.as_view(), 
+         name='user_suspend'),  # PUT (suspend user)
+    path('users/<int:pk>/active/', UserView.as_view(), 
+         name='user_active'),  # PUT (active user)
+
 
     # Album
     path('albums/', AlbumView.as_view(), name='album_list'),  # GET (all), POST

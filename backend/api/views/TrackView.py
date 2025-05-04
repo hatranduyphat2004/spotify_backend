@@ -71,10 +71,7 @@ class TrackView(APIView):
     def post(self, request):
         """Thêm một track mới và tải file lên S3."""
         # Kiểm tra các trường bắt buộc
-
-        print("Request files:", request.FILES)
-        print("Request data:", request.data)
-        required_fields = ['title', 'artist_id']
+        required_fields = ['title', 'artist_id[]']
         for field in required_fields:
             if field not in request.data:
                 return Response({
@@ -92,14 +89,18 @@ class TrackView(APIView):
                 "message": "File nhạc/ video không được để trống."
             }, status=status.HTTP_400_BAD_REQUEST)
 
-        # Kiểm tra artist tồn tại
-        try:
-            artist = Artist.objects.get(pk=request.data['artist_id'])
-        except Artist.DoesNotExist:
-            return Response({
-                "success": False,
-                "message": "Artist không tồn tại."
-            }, status=status.HTTP_400_BAD_REQUEST)
+        # Kiểm tra danh sách artist tồn tại
+        artist_ids = request.data.getlist('artist_id[]')
+        artists = []
+        for artist_id in artist_ids:
+            try:
+                artist = Artist.objects.get(pk=artist_id)
+                artists.append(artist)
+            except Artist.DoesNotExist:
+                return Response({
+                    "success": False,
+                    "message": f"Artist với ID {artist_id} không tồn tại."
+                }, status=status.HTTP_400_BAD_REQUEST)
 
         # Xử lý file ảnh nếu có
         img_file = request.FILES.get('img_path')
@@ -109,7 +110,7 @@ class TrackView(APIView):
                 "message": "File ảnh không được để trống."
             }, status=status.HTTP_400_BAD_REQUEST)
 
-    # Chuẩn bị dữ liệu
+        # Chuẩn bị dữ liệu
         data = request.data
         data['file_path'] = track_file
         data['img_path'] = img_file
@@ -189,12 +190,13 @@ class TrackView(APIView):
         if serializer.is_valid():
             track = serializer.save()
 
-            # Tạo ArtistTrack
-            ArtistTrack.objects.create(
-                artist=artist,
-                track=track,
-                role='primary'  # Mặc định là nghệ sĩ chính
-            )
+            # Tạo ArtistTrack cho từng artist
+            for i, artist in enumerate(artists):
+                ArtistTrack.objects.create(
+                    artist=artist,
+                    track=track,
+                    role='primary' if i == 0 else 'featured'  # Artist đầu tiên là primary, còn lại là featured
+                )
 
             return Response({
                 "success": True,
