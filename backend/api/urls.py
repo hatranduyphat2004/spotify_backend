@@ -1,45 +1,62 @@
 from django.urls import path
-from api.views.AuthView import AuthView
-from api.views.UserView import UserView
-from api.views.ArtistView import ArtistView
+
 from api.views.AlbumView import AlbumView
-from api.views.TrackView import TrackView
+from api.views.ArtistView import ArtistView
+from api.views.AuthView import AuthView
+from api.views.ConversationMemberView import AddConversationMemberView
+from api.views.ConversationView import ConversationListView, ConversationCreateView, DeleteConversationView
 from api.views.FolderView import FolderView
 from api.views.GenreView import GenreView
-
-from api.views.ConversationView import ConversationListView, ConversationCreateView, DeleteConversationView
-from api.views.ConversationMemberView import AddConversationMemberView
-from api.views.MessageView import ConversationMessageHistoryView, MarkMessageAsReadView, DeleteMessageView, SendMessageView
+from api.views.MessageView import ConversationMessageHistoryView, MarkMessageAsReadView, DeleteMessageView, \
+    SendMessageView
+from api.views.PlaylistAddTrackView import PlaylistAddTrackView
+from api.views.PlaylistView import PlaylistView
+from api.views.TrackView import TrackView
+from api.views.UserView import UserView
 
 urlpatterns = [
     # Auth
     path('auth/<str:action>/', AuthView.as_view(), name='auth-action'),
+
     # Artist
     path('artists/', ArtistView.as_view(),
          name='artist_list'),  # GET (all), POST
     path('artists/<int:pk>/', ArtistView.as_view(),
          name='artist_detail'),  # GET (one), PUT, DELETE
     path('artists/count/', ArtistView.as_view(), name='artist-count'),
+
     # User
     path('users/', UserView.as_view(), name='user_list'),  # GET (all), POST
     path('users/<int:pk>/', UserView.as_view(),
          name='user_detail'),  # GET (one), PUT, DELETE
-    path('users/<str:pk>/', UserView.as_view()), # count user
+    path('users/<str:pk>/', UserView.as_view()),  # count user
+
     # Album
     path('albums/', AlbumView.as_view(), name='album_list'),  # GET (all), POST
     path('albums/<int:pk>/', AlbumView.as_view(),
          name='album_detail'),  # GET (one), PUT, DELETE
+
     # Track
     path('tracks/', TrackView.as_view(), name='track_list'),  # GET (all), POST
     path('tracks/<int:pk>/', TrackView.as_view(),
          name='track_detail'),  # GET (one), PUT, DELETE
-    path('tracks/count/', TrackView.as_view()), # Get Total Songs
+    path('tracks/count/', TrackView.as_view()),  # Get Total Songs
     path('listen/count/', TrackView.as_view(), name='total-listens'),
+
     # Folder
     path('folders/', FolderView.as_view(),
          name='folder_list'),  # GET (all), POST
     path('folders/<int:pk>/', FolderView.as_view(),
          name='folder_detail'),  # GET (one), PUT, DELETE
+
+    # Playlist + Add Track
+    path('playlists/', PlaylistView.as_view(), name='playlist-list-create'),
+    path('playlists/<int:pk>/', PlaylistView.as_view(), name='playlist-detail'),
+    path('playlists/add-track/', PlaylistAddTrackView.as_view(), name='playlist-add-track'),
+    path('playlists/<int:playlist_id>/tracks/<int:track_id>/delete/', PlaylistView.as_view(),
+         name='delete-track-from-playlist'),
+    path('playlists/<int:pk>/delete/', PlaylistView.as_view(), name='delete-playlist'),
+
     # Genre
     path('genres/', GenreView.as_view(), name='genre_list'),  # GET (all), POST
     path('genres/<int:pk>/', GenreView.as_view(),

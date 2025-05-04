@@ -1,8 +1,9 @@
 # api/models/TrackListen.py
 from django.conf import settings
 from django.db import models
-from django.contrib.auth.models import User
+
 from api.models.Track import Track
+
 
 class TrackListen(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
