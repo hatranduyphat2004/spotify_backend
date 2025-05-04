@@ -13,6 +13,8 @@ from mutagen.mp3 import MP3
 from mutagen import MutagenError
 import tempfile
 
+from moviepy import VideoFileClip
+
 
 class TrackView(APIView):
     # parser_classes = (MultiPartParser, FormParser)
@@ -80,12 +82,14 @@ class TrackView(APIView):
                     "message": f"Thiếu trường bắt buộc: {field}"
                 }, status=status.HTTP_400_BAD_REQUEST)
 
-        # Kiểm tra file nhạc
+        # Kiểm tra file/video nhạc
         track_file = request.FILES.get('file_path')
-        if not track_file:
+        video_file = request.FILES.get('video_path')
+
+        if not track_file and not video_file:
             return Response({
                 "success": False,
-                "message": "File nhạc không được để trống."
+                "message": "File nhạc/ video không được để trống."
             }, status=status.HTTP_400_BAD_REQUEST)
 
         # Kiểm tra artist tồn tại
@@ -109,32 +113,46 @@ class TrackView(APIView):
         data = request.data
         data['file_path'] = track_file
         data['img_path'] = img_file
-
-        # Xử lý album
-        if 'album' in data and data['album'] == 'none':
-            data['album'] = None
+        data['video_path'] = video_file
 
         # Xử lý duration
         try:
-            with tempfile.NamedTemporaryFile(delete=False, suffix='.mp3') as temp_file:
-                for chunk in track_file.chunks():
-                    temp_file.write(chunk)
-                temp_file.flush()
+            if track_file:
+                with tempfile.NamedTemporaryFile(delete=False, suffix='.mp3') as temp_file:
+                    for chunk in track_file.chunks():
+                        temp_file.write(chunk)
+                    temp_file.flush()
 
-                audio = MP3(temp_file.name)
-                duration_seconds = int(audio.info.length)
-                data['duration'] = duration_seconds
+                    audio = MP3(temp_file.name)
+                    duration_seconds = int(audio.info.length)
+                    data['duration'] = duration_seconds
+            else:
+                with tempfile.NamedTemporaryFile(delete=False, suffix='.mp4') as temp_file:
+                    for chunk in video_file.chunks():
+                        temp_file.write(chunk)
+                    temp_file.flush()
+
+                    clip = VideoFileClip(temp_file.name)
+                    # duration in seconds
+                    duration_seconds = int(clip.duration)
+                    data['duration'] = duration_seconds
+                    clip.close()
 
         except MutagenError:
             return Response({
                 "success": False,
                 "message": "Không thể phân tích file mp3. File có thể bị lỗi."
             }, status=status.HTTP_400_BAD_REQUEST)
+
         except Exception as e:
             return Response({
                 "success": False,
-                "message": f"Lỗi khi xử lý file mp3: {str(e)}"
+                "message": f"Lỗi khi xử lý nhạc/ video: {str(e)}"
             }, status=status.HTTP_400_BAD_REQUEST)
+
+        # Xử lý album
+        if 'album' in data and data['album'] == 'none':
+            data['album'] = None
 
         # Xử lý track_number
         if 'track_number' in data:
