@@ -6,6 +6,7 @@ from api.views.AlbumView import AlbumView
 from api.views.TrackView import TrackView
 from api.views.FolderView import FolderView
 from api.views.GenreView import GenreView
+from api.views.PlaylistView import PlaylistView
 from api.views.ConversationView import ConversationListView, ConversationCreateView, DeleteConversationView
 from api.views.ConversationMemberView import AddConversationMemberView
 from api.views.MessageView import ConversationMessageHistoryView, MarkMessageAsReadView, DeleteMessageView, SendMessageView
@@ -58,6 +59,12 @@ urlpatterns = [
     path('genres/', GenreView.as_view(), name='genre_list'),  # GET (all), POST
     path('genres/<int:pk>/', GenreView.as_view(),
          name='genre_detail'),  # GET (one), PUT, DELETE
+    
+    #Playlist
+    path('playlists/', PlaylistView.as_view()),             # GET all / POST new
+    path('playlists/<int:pk>/', PlaylistView.as_view()),
+    
+    
 
     # Conversation
     path('conversations/', ConversationListView.as_view(),
@@ -80,7 +87,8 @@ urlpatterns = [
     # Conversation Member
     path('conversations/<int:conversation_id>/add-member/',
          AddConversationMemberView.as_view(), name='add-conversation-member'),
-
+    
+    #Transaction
     path('transactions/', TransactionView.as_view()),
     path('transactions/<int:pk>/', TransactionView.as_view()),
     path('plans/', SubscriptionPlanView.as_view()),

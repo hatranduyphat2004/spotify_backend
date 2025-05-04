@@ -11,10 +11,19 @@ class ConversationListView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        """Lấy danh sách tất cả các cuộc trò chuyện"""
-        conversations = Conversation.objects.filter(is_active=True)
+        """Lấy danh sách các cuộc trò chuyện của user đang đăng nhập"""
+        user = request.user
+        conversations = Conversation.objects.filter(
+            conversationmember__user=user,
+            is_active=True,
+            conversationmember__is_active=True
+        ).distinct()
+
         serializer = ConversationSerializer(conversations, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({
+            "success": True,
+            "data": serializer.data
+        }, status=status.HTTP_200_OK)
 
 # Tạo cuộc trò chuyện mới
 class ConversationCreateView(APIView):

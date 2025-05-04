@@ -1,8 +1,10 @@
 from django.db import models
 from .Folder import Folder
+from .User import User
 
 class Playlist(models.Model):
     playlist_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     folder = models.ForeignKey(Folder, on_delete=models.CASCADE, null=True, blank=True)
     description = models.TextField(blank=True)
     cover_img_url = models.URLField(blank=True)
