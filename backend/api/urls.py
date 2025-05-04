@@ -14,6 +14,7 @@ from api.views.SubscriptionPlanView import SubscriptionPlanView
 from api.views.TransactionByOrderCodeView import TransactionByOrderCodeView
 from api.views.StreamView import stream_mp3
 from api.views.StreamView import get_audio_url
+from api.views.TopTrackView import TopTrackView
 from api.views.ArtistTrackView import ArtistTrackView, ArtistTrackByTrackView, ArtistTrackByArtistView
 
 
@@ -41,6 +42,7 @@ urlpatterns = [
     path('tracks/', TrackView.as_view(), name='track_list'),  # GET (all), POST
     path('tracks/<int:pk>/', TrackView.as_view(),
          name='track_detail'),  # GET (one), PUT, DELETE
+
     # Folder
     path('folders/', FolderView.as_view(),
          name='folder_list'),  # GET (all), POST
@@ -72,18 +74,27 @@ urlpatterns = [
     # Conversation Member
     path('conversations/<int:conversation_id>/add-member/',
          AddConversationMemberView.as_view(), name='add-conversation-member'),
-    
+
     path('transactions/', TransactionView.as_view()),
     path('transactions/<int:pk>/', TransactionView.as_view()),
     path('plans/', SubscriptionPlanView.as_view()),
     path('plans/<int:pk>/', SubscriptionPlanView.as_view()),
-#     path('payment-callback/', PayOSWebhookView.as_view(), name='payos-callback'),
-    path('transactions/by-order-code/<int:order_code>/', TransactionByOrderCodeView.as_view()),
+    #     path('payment-callback/', PayOSWebhookView.as_view(), name='payos-callback'),
+    path('transactions/by-order-code/<int:order_code>/',
+         TransactionByOrderCodeView.as_view()),
 
     # Artist-Track
     path('artist-tracks/', ArtistTrackView.as_view(), name='artist-track-list'),
-    path('artist-tracks/<int:pk>/', ArtistTrackView.as_view(), name='artist-track-detail'),
-    path('artist-tracks/track/<int:track_id>/', ArtistTrackByTrackView.as_view(), name='artist-track-by-track'),
-    path('artist-tracks/artist/<int:artist_id>/', ArtistTrackByArtistView.as_view(), name='artist-track-by-artist'),
+    path('artist-tracks/<int:pk>/', ArtistTrackView.as_view(),
+         name='artist-track-detail'),
+    path('artist-tracks/track/<int:track_id>/',
+         ArtistTrackByTrackView.as_view(), name='artist-track-by-track'),
+    path('artist-tracks/artist/<int:artist_id>/',
+         ArtistTrackByArtistView.as_view(), name='artist-track-by-artist'),
+
+
+    # More Track
+    path('tracks/recommended/', TopTrackView.as_view(),
+         name='track_recommended'),  # GET (all), POST
 
 ]

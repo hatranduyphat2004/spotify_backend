@@ -41,15 +41,23 @@ class TrackView(APIView):
         """Thêm một track mới và tải file lên S3."""
         # Kiểm tra các trường bắt buộc
 
-        print("Request files:", request.FILES)
-        print("Request data:", request.data)
-        required_fields = ['title', 'artist_id']
+        required_fields = ['title', 'artist_ids']
         for field in required_fields:
-            if field not in request.data:
+            value = request.data.get(field)
+            print(f">>>>>>>>>>>>>>>{value}")
+            if value in [None, '', [], 'null']:
                 return Response({
                     "success": False,
                     "message": f"Thiếu trường bắt buộc: {field}"
                 }, status=status.HTTP_400_BAD_REQUEST)
+
+        artist_ids_rq = request.data.getlist('artist_ids', [])
+        artist_ids = [int(i) for i in artist_ids_rq if i]
+        if not artist_ids:
+            return Response({
+                "success": False,
+                "message": "Phải cung cấp ít nhất 1 artist_id"
+            }, status=status.HTTP_400_BAD_REQUEST)
 
         # Kiểm tra file/video nhạc
         track_file = request.FILES.get('file_path')
@@ -61,13 +69,12 @@ class TrackView(APIView):
                 "message": "File nhạc/ video không được để trống."
             }, status=status.HTTP_400_BAD_REQUEST)
 
-        # Kiểm tra artist tồn tại
-        try:
-            artist = Artist.objects.get(pk=request.data['artist_id'])
-        except Artist.DoesNotExist:
+       # Kiểm tra tất cả artist
+        artists = Artist.objects.filter(artist_id__in=artist_ids)
+        if not artists.exists() or len(artists) != len(artist_ids):
             return Response({
                 "success": False,
-                "message": "Artist không tồn tại."
+                "message": "Một hoặc nhiều artist_id không hợp lệ"
             }, status=status.HTTP_400_BAD_REQUEST)
 
         # Xử lý file ảnh nếu có
@@ -152,18 +159,17 @@ class TrackView(APIView):
         if 'is_active' in data:
             data['is_active'] = bool(data['is_active'])
 
-        print("Data:", data)
-
         serializer = TrackSerializer(data=data)
         if serializer.is_valid():
             track = serializer.save()
 
-            # Tạo ArtistTrack
-            ArtistTrack.objects.create(
-                artist=artist,
-                track=track,
-                role='primary'  # Mặc định là nghệ sĩ chính
-            )
+            for i, artist in enumerate(artists):
+                ArtistTrack.objects.create(
+                    artist=artist,
+                    track=track,
+                    # Gán artist đầu tiên là chính, còn lại là featured
+                    role='primary' if i == 0 else 'featured'
+                )
 
             return Response({
                 "success": True,

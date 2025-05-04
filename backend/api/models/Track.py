@@ -1,5 +1,6 @@
 from django.db import models
 from .Album import Album
+from .Artist import Artist
 from django.utils import timezone
 
 
@@ -17,6 +18,11 @@ class Track(models.Model):
     preview_url = models.URLField(blank=True)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(default=timezone.now)
+    artists = models.ManyToManyField(
+        Artist,
+        through='ArtistTrack',
+        related_name='tracks'
+    )
 
     class Meta:
         db_table = 'track'
