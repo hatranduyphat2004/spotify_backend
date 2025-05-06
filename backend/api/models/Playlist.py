@@ -1,6 +1,7 @@
 from django.db import models
 from .Folder import Folder
 from .User import User
+from .Track import Track
 
 
 class Playlist(models.Model):
@@ -11,6 +12,9 @@ class Playlist(models.Model):
     description = models.TextField(blank=True)
     cover_img_url = models.URLField(blank=True)
     is_active = models.BooleanField(default=True)
+
+    def get_tracks(self):
+        return Track.objects.filter(playlisttrack__playlist=self, playlisttrack__is_active=True)
 
     class Meta:
         db_table = 'playlist'
