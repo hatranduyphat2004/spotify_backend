@@ -16,6 +16,7 @@ from api.views.TransactionByOrderCodeView import TransactionByOrderCodeView
 from api.views.StreamView import stream_mp3
 from api.views.StreamView import get_audio_url
 from api.views.TopTrackView import TopTrackView
+from api.views.SearchView import SearchView
 from api.views.ArtistTrackView import ArtistTrackView, ArtistTrackByTrackView, ArtistTrackByArtistView
 from api.views.ArtistAlbumView import ArtistAlbumView, ArtistAlbumByAlbumView, ArtistAlbumByArtistView
 
@@ -59,12 +60,13 @@ urlpatterns = [
     path('genres/', GenreView.as_view(), name='genre_list'),  # GET (all), POST
     path('genres/<int:pk>/', GenreView.as_view(),
          name='genre_detail'),  # GET (one), PUT, DELETE
-    
-    #Playlist
-    path('playlists/', PlaylistView.as_view()),             # GET all / POST new
+
+    # Playlist
+    path('playlists/', PlaylistView.as_view()
+         ),             # GET all / POST new
     path('playlists/<int:pk>/', PlaylistView.as_view()),
-    
-    
+
+
 
     # Conversation
     path('conversations/', ConversationListView.as_view(),
@@ -87,8 +89,8 @@ urlpatterns = [
     # Conversation Member
     path('conversations/<int:conversation_id>/add-member/',
          AddConversationMemberView.as_view(), name='add-conversation-member'),
-    
-    #Transaction
+
+    # Transaction
     path('transactions/', TransactionView.as_view()),
     path('transactions/<int:pk>/', TransactionView.as_view()),
     path('plans/', SubscriptionPlanView.as_view()),
@@ -119,5 +121,8 @@ urlpatterns = [
          ArtistAlbumByAlbumView.as_view(), name='artist-album-by-album'),
     path('artist-albums/artist/<int:artist_id>/',
          ArtistAlbumByArtistView.as_view(), name='artist-album-by-artist'),
+
+
+    path('search/', SearchView.as_view(), name='search-track')
 
 ]

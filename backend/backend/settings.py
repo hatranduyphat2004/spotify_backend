@@ -156,18 +156,17 @@ DATABASES = {
     #     }
 
     # minh
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',  # Sử dụng MySQL
-        'NAME': 'backend_spotify',  # Thay bằng tên database của bạn
-        'USER': 'root',  # Tài khoản MySQL
-        'PASSWORD': '',  # Mật khẩu MySQL
-        'HOST': '127.0.0.1',  # Nếu dùng máy chủ từ xa, thay bằng IP
-        'PORT': '3306',  # Cổng của P
-        'OPTIONS': {
-            'charset': 'utf8mb4',  # Hỗ trợ Unicode đầy đủ
-        },
-    }
-  
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',  # Sử dụng MySQL
+    #     'NAME': 'backend_spotify',  # Thay bằng tên database của bạn
+    #     'USER': 'root',  # Tài khoản MySQL
+    #     'PASSWORD': '',  # Mật khẩu MySQL
+    #     'HOST': '127.0.0.1',  # Nếu dùng máy chủ từ xa, thay bằng IP
+    #     'PORT': '3306',  # Cổng của P
+    #     'OPTIONS': {
+    #         'charset': 'utf8mb4',  # Hỗ trợ Unicode đầy đủ
+    #     },
+
     # 'default': {
     #     'ENGINE': 'django.db.backends.mysql',  # Sử dụng MySQL
     #     'NAME': 'backend_spotify',  # Thay bằng tên database của bạn
@@ -180,7 +179,6 @@ DATABASES = {
     #     },
     # }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -200,7 +198,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -212,7 +209,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
@@ -220,7 +216,6 @@ STATIC_URL = 'static/'
 # STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'  # nếu cần
 # AWS_LOCATION = 'static'  # tùy bạn
 # STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'  # nếu có custom domain
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -246,12 +241,12 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
-    "AUTH_HEADER_TYPES": ("Bearer",),  # Header bắt đầu bằng "Bearer <token>"
+    # Header bắt đầu bằng "Bearer <token>"
+    "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
 # CORS_ALLOW_ALL_ORIGINS = True  # Chấp nhận tất cả domain
 CORS_ALLOW_CREDENTIALS = True
-
 
 # không cần do dùng s3 aws
 # MEDIA_URL = '/media/'  # URL để truy cập file uploads

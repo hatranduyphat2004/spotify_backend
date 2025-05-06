@@ -74,14 +74,13 @@ class TrackView(APIView):
         required_fields = ['title', 'artist_id[]']
         for field in required_fields:
             value = request.data.get(field)
-            print(f">>>>>>>>>>>>>>>{value}")
             if value in [None, '', [], 'null']:
                 return Response({
                     "success": False,
                     "message": f"Thiếu trường bắt buộc: {field}"
                 }, status=status.HTTP_400_BAD_REQUEST)
 
-        artist_ids_rq = request.data.getlist('artist_ids', [])
+        artist_ids_rq = request.data.getlist('artist_id[]', [])
         artist_ids = [int(i) for i in artist_ids_rq if i]
         if not artist_ids:
             return Response({
@@ -99,8 +98,6 @@ class TrackView(APIView):
                 "message": "File nhạc/ video không được để trống."
             }, status=status.HTTP_400_BAD_REQUEST)
 
-        # Kiểm tra danh sách artist tồn tại
-        artist_ids = request.data.getlist('artist_id[]')
         artists = []
         for artist_id in artist_ids:
             try:
@@ -122,9 +119,15 @@ class TrackView(APIView):
 
         # Chuẩn bị dữ liệu
         data = request.data
+
         data['file_path'] = track_file
         data['img_path'] = img_file
         data['video_path'] = video_file
+        # Kiểm tra is_premium trong request và cập nhật preview_url
+        if data.get('is_premium', False):  # Nếu is_premium là True
+            data['preview_url'] = "https://phathocit-spotify-backend-bucket.s3.us-east-2.amazonaws.com/tracks/Introducing+Premium+Mini.mp3"
+        else:
+            data['preview_url'] = ""
 
         # Xử lý duration
         try:
