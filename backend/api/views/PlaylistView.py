@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api.models.Playlist import Playlist
+from api.models.PlaylistTrack import PlaylistTrack
+from api.models.Track import Track
 from api.serializers.PlaylistSerializer import PlaylistSerializer
 
 
