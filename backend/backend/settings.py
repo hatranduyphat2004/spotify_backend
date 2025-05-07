@@ -19,6 +19,9 @@ import os
 # Tải các biến môi trường từ file .env
 load_dotenv()
 
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -117,17 +120,17 @@ DATABASES = {
     # }
 
     # phat
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',  # Sử dụng MySQL
-        'NAME': 'spotify',  # Thay bằng tên database của bạn
-        'USER': 'root',  # Tài khoản MySQL
-        'PASSWORD': '',  # Mật khẩu MySQL
-        'HOST': 'localhost',  # Nếu dùng máy chủ từ xa, thay bằng IP
-        'PORT': '2434',  # Cổng của P
-        'OPTIONS': {
-            'charset': 'utf8mb4',  # Hỗ trợ Unicode đầy đủ
-        },
-    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',  # Sử dụng MySQL
+    #     'NAME': 'spotify',  # Thay bằng tên database của bạn
+    #     'USER': 'root',  # Tài khoản MySQL
+    #     'PASSWORD': '',  # Mật khẩu MySQL
+    #     'HOST': 'localhost',  # Nếu dùng máy chủ từ xa, thay bằng IP
+    #     'PORT': '2434',  # Cổng của P
+    #     'OPTIONS': {
+    #         'charset': 'utf8mb4',  # Hỗ trợ Unicode đầy đủ
+    #     },
+    # }
 
     # Luan
     # 'default': {
@@ -156,16 +159,17 @@ DATABASES = {
     #     }
 
     # minh
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',  # Sử dụng MySQL
-    #     'NAME': 'backend_spotify',  # Thay bằng tên database của bạn
-    #     'USER': 'root',  # Tài khoản MySQL
-    #     'PASSWORD': '',  # Mật khẩu MySQL
-    #     'HOST': '127.0.0.1',  # Nếu dùng máy chủ từ xa, thay bằng IP
-    #     'PORT': '3306',  # Cổng của P
-    #     'OPTIONS': {
-    #         'charset': 'utf8mb4',  # Hỗ trợ Unicode đầy đủ
-    #     },
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',  # Sử dụng MySQL
+        'NAME': 'backend_spotify',  # Thay bằng tên database của bạn
+        'USER': 'root',  # Tài khoản MySQL
+        'PASSWORD': '',  # Mật khẩu MySQL
+        'HOST': '127.0.0.1',  # Nếu dùng máy chủ từ xa, thay bằng IP
+        'PORT': '3306',  # Cổng của P
+        'OPTIONS': {
+            'charset': 'utf8mb4',  # Hỗ trợ Unicode đầy đủ
+        },
+    }
 
     # 'default': {
     #     'ENGINE': 'django.db.backends.mysql',  # Sử dụng MySQL
