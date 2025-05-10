@@ -19,7 +19,6 @@ from api.views.TopTrackView import TopTrackView
 from api.views.SearchView import SearchView
 from api.views.ArtistTrackView import ArtistTrackView, ArtistTrackByTrackView, ArtistTrackByArtistView
 from api.views.ArtistAlbumView import ArtistAlbumView, ArtistAlbumByAlbumView, ArtistAlbumByArtistView
-from api.views.OpenAIView import ChatWithAIView
 from api.views.GeminiView import ChatWithGeminiAPI
 
 urlpatterns = [
@@ -126,10 +125,6 @@ urlpatterns = [
 
 
     path('search/', SearchView.as_view(), name='search-track'),
-    
-    #OpenAI
-    
-    path('ai/chat/', ChatWithAIView.as_view()),
     
     path('gemini/chat/', ChatWithGeminiAPI.as_view()),
 
