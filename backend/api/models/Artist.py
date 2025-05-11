@@ -9,8 +9,10 @@ class Artist(models.Model):
     # Upload vào folder media/artists/
     profile_picture = models.FileField(
         upload_to='artists/', blank=True, null=True)
+    bg_picture = models.FileField(
+        upload_to='artists/', blank=True, null=True)
     is_active = models.BooleanField(default=True)
-    
+
     class Meta:
         db_table = 'artist'
 

@@ -21,8 +21,19 @@ from api.views.ArtistTrackView import ArtistTrackView, ArtistTrackByTrackView, A
 from api.views.ArtistAlbumView import ArtistAlbumView, ArtistAlbumByAlbumView, ArtistAlbumByArtistView
 from api.views.GeminiView import ChatWithGeminiAPI
 from api.views.RecommendTrackView import RecommendTrackView
+from api.views.LyricView import LyricView
+from api.views.UploadLyricView import UploadLyricView
+from api.views.GetLyricByTrackView import GetLyricByTrackView
+
 
 urlpatterns = [
+    path('lyrics/upload/<int:track_id>/',
+         UploadLyricView.as_view()),
+    path('lyrics/track/<int:track_id>/', GetLyricByTrackView.as_view()),
+    #
+    path('lyrics/', LyricView.as_view()),
+    path('lyrics/<int:pk>/', LyricView.as_view()),
+    #
     path('presigned-url/<str:filename>/', get_audio_url),
     # Stream track
     path('stream/<str:filename>/', stream_mp3, name='stream_mp3'),
@@ -126,6 +137,7 @@ urlpatterns = [
 
 
     path('search/', SearchView.as_view(), name='search-track'),
+
 
     path("recommend-track/", RecommendTrackView.as_view(), name="recommend-track"),
 
