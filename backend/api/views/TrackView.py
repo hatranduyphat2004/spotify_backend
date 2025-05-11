@@ -26,10 +26,25 @@ class TrackView(APIView):
 
     def get(self, request, pk=None, album_id=None):
         """Lấy danh sách tracks theo điều kiện."""
+        artist_id = request.query_params.get('artist_id', None)
+        print(f">>>>>>>>>>>>>>>>>>w.{artist_id}")
+
         try:
+
             if album_id is not None:
                 # Lấy danh sách track của một album
                 tracks = Track.objects.filter(album=album_id)
+
+            elif artist_id is not None:
+                print(f">>>>>>>>>>>>>>>>>>.{artist_id}")
+                # Lấy danh sách track của một artist
+                artist_tracks = ArtistTrack.objects.filter(artist_id=artist_id)
+                track_ids = [
+                    artist_track.track.track_id for artist_track in artist_tracks]
+
+                # Lấy tất cả các track tương ứng với artist_id
+                tracks = Track.objects.filter(track_id__in=track_ids)
+
             elif pk:
                 # Lấy một track cụ thể
                 track = get_object_or_404(Track, pk=pk)
