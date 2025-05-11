@@ -20,9 +20,11 @@ from api.views.SearchView import SearchView
 from api.views.ArtistTrackView import ArtistTrackView, ArtistTrackByTrackView, ArtistTrackByArtistView
 from api.views.ArtistAlbumView import ArtistAlbumView, ArtistAlbumByAlbumView, ArtistAlbumByArtistView
 from api.views.GeminiView import ChatWithGeminiAPI
+from api.views.RecommendTrackView import RecommendTrackView
 from api.views.LyricView import LyricView
 from api.views.UploadLyricView import UploadLyricView
 from api.views.GetLyricByTrackView import GetLyricByTrackView
+
 
 urlpatterns = [
     path('lyrics/upload/<int:track_id>/',
@@ -135,6 +137,9 @@ urlpatterns = [
 
 
     path('search/', SearchView.as_view(), name='search-track'),
+
+
+    path("recommend-track/", RecommendTrackView.as_view(), name="recommend-track"),
 
     path('gemini/chat/', ChatWithGeminiAPI.as_view()),
 
