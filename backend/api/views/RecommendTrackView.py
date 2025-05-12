@@ -10,6 +10,7 @@ from api.serializers.TrackSerializer import TrackSerializer
 
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
+
 class RecommendTrackView(APIView):
     def post(self, request):
         text = request.data.get("text", "").strip()
@@ -20,7 +21,8 @@ class RecommendTrackView(APIView):
             }, status=status.HTTP_400_BAD_REQUEST)
 
         # ---- Phân biệt: Nếu chứa từ khóa kích hoạt mở bài ----
-        trigger_keywords = ["mở bài", "bật nhạc", "phát bài", "cho nghe", "mở nhạc", "nghe"]
+        trigger_keywords = ["mở bài", "bật nhạc",
+                            "phát bài", "cho nghe", "mở nhạc", "nghe"]
         lowered_text = text.lower()
 
         for keyword in trigger_keywords:
@@ -35,7 +37,8 @@ class RecommendTrackView(APIView):
                     }, status=status.HTTP_400_BAD_REQUEST)
 
                 # Tìm bài hát theo tên
-                track = Track.objects.filter(title__icontains=title_part).first()
+                track = Track.objects.filter(
+                    title__icontains=title_part).first()
                 if track:
                     serializer = TrackSerializer(track)
                     return Response({
@@ -50,7 +53,8 @@ class RecommendTrackView(APIView):
                 }, status=status.HTTP_404_NOT_FOUND)
 
         # ---- Không chứa keyword => dùng gợi ý theo mô tả ----
-        tracks = Track.objects.exclude(description__isnull=True).exclude(description__exact="")
+        tracks = Track.objects.exclude(
+            description__isnull=True).exclude(description__exact="")
         if not tracks.exists():
             return Response({
                 "success": False,
