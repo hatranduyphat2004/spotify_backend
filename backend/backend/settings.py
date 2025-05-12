@@ -119,17 +119,17 @@ DATABASES = {
     # }
 
     # phat
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',  # Sử dụng MySQL
-        'NAME': 'spotify',  # Thay bằng tên database của bạn
-        'USER': 'root',  # Tài khoản MySQL
-        'PASSWORD': '',  # Mật khẩu MySQL
-        'HOST': 'localhost',  # Nếu dùng máy chủ từ xa, thay bằng IP
-        'PORT': '2434',  # Cổng của P
-        'OPTIONS': {
-            'charset': 'utf8mb4',  # Hỗ trợ Unicode đầy đủ
-        },
-    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',  # Sử dụng MySQL
+    #     'NAME': 'spotify',  # Thay bằng tên database của bạn
+    #     'USER': 'root',  # Tài khoản MySQL
+    #     'PASSWORD': '',  # Mật khẩu MySQL
+    #     'HOST': 'localhost',  # Nếu dùng máy chủ từ xa, thay bằng IP
+    #     'PORT': '2434',  # Cổng của P
+    #     'OPTIONS': {
+    #         'charset': 'utf8mb4',  # Hỗ trợ Unicode đầy đủ
+    #     },
+    # }
 
     # Luan
     # 'default': {

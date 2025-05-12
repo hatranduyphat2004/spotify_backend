@@ -19,6 +19,7 @@ from api.views.TopTrackView import TopTrackView
 from api.views.SearchView import SearchView
 from api.views.ArtistTrackView import ArtistTrackView, ArtistTrackByTrackView, ArtistTrackByArtistView
 from api.views.ArtistAlbumView import ArtistAlbumView, ArtistAlbumByAlbumView, ArtistAlbumByArtistView
+from api.views.PopularityView import IncreasePopularityView
 from api.views.GeminiView import ChatWithGeminiAPI
 from api.views.RecommendTrackView import RecommendTrackView
 from api.views.LyricView import LyricView
@@ -64,6 +65,9 @@ urlpatterns = [
          name='track_detail'),  # GET (one), PUT, DELETE
     path('tracks/album/<int:album_id>/', TrackView.as_view(),
          name='track_by_album'),  # GET tracks by album
+    
+
+    
     # Folder
     path('folders/', FolderView.as_view(),
          name='folder_list'),  # GET (all), POST
@@ -125,6 +129,7 @@ urlpatterns = [
     # More Track
     path('tracks/recommended/', TopTrackView.as_view(),
          name='track_recommended'),  # GET (all), POST
+    path('tracks/top', TopTrackView.as_view(), name='top_tracks'),
 
     # Artist-Album
     path('artist-albums/', ArtistAlbumView.as_view(), name='artist-album-list'),
@@ -134,6 +139,9 @@ urlpatterns = [
          ArtistAlbumByAlbumView.as_view(), name='artist-album-by-album'),
     path('artist-albums/artist/<int:artist_id>/',
          ArtistAlbumByArtistView.as_view(), name='artist-album-by-artist'),
+     
+     #Popularity
+     path('tracks/<int:track_id>/increase-popularity/', IncreasePopularityView.as_view(), name='increase-popularity'),
 
 
     path('search/', SearchView.as_view(), name='search-track'),
