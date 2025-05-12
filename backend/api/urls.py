@@ -16,11 +16,25 @@ from api.views.TransactionByOrderCodeView import TransactionByOrderCodeView
 from api.views.StreamView import stream_mp3
 from api.views.StreamView import get_audio_url
 from api.views.TopTrackView import TopTrackView
+from api.views.SearchView import SearchView
 from api.views.ArtistTrackView import ArtistTrackView, ArtistTrackByTrackView, ArtistTrackByArtistView
 from api.views.ArtistAlbumView import ArtistAlbumView, ArtistAlbumByAlbumView, ArtistAlbumByArtistView
 from api.views.PopularityView import IncreasePopularityView
+from api.views.GeminiView import ChatWithGeminiAPI
+from api.views.RecommendTrackView import RecommendTrackView
+from api.views.LyricView import LyricView
+from api.views.UploadLyricView import UploadLyricView
+from api.views.GetLyricByTrackView import GetLyricByTrackView
+
 
 urlpatterns = [
+    path('lyrics/upload/<int:track_id>/',
+         UploadLyricView.as_view()),
+    path('lyrics/track/<int:track_id>/', GetLyricByTrackView.as_view()),
+    #
+    path('lyrics/', LyricView.as_view()),
+    path('lyrics/<int:pk>/', LyricView.as_view()),
+    #
     path('presigned-url/<str:filename>/', get_audio_url),
     # Stream track
     path('stream/<str:filename>/', stream_mp3, name='stream_mp3'),
@@ -63,12 +77,13 @@ urlpatterns = [
     path('genres/', GenreView.as_view(), name='genre_list'),  # GET (all), POST
     path('genres/<int:pk>/', GenreView.as_view(),
          name='genre_detail'),  # GET (one), PUT, DELETE
-    
-    #Playlist
-    path('playlists/', PlaylistView.as_view()),             # GET all / POST new
+
+    # Playlist
+    path('playlists/', PlaylistView.as_view()
+         ),             # GET all / POST new
     path('playlists/<int:pk>/', PlaylistView.as_view()),
-    
-    
+
+
 
     # Conversation
     path('conversations/', ConversationListView.as_view(),
@@ -91,8 +106,8 @@ urlpatterns = [
     # Conversation Member
     path('conversations/<int:conversation_id>/add-member/',
          AddConversationMemberView.as_view(), name='add-conversation-member'),
-    
-    #Transaction
+
+    # Transaction
     path('transactions/', TransactionView.as_view()),
     path('transactions/<int:pk>/', TransactionView.as_view()),
     path('plans/', SubscriptionPlanView.as_view()),
@@ -126,5 +141,14 @@ urlpatterns = [
          ArtistAlbumByArtistView.as_view(), name='artist-album-by-artist'),
      
      #Popularity
-     path('tracks/<int:track_id>/increase-popularity/', IncreasePopularityView.as_view(), name='increase-popularity')
+     path('tracks/<int:track_id>/increase-popularity/', IncreasePopularityView.as_view(), name='increase-popularity'),
+
+
+    path('search/', SearchView.as_view(), name='search-track'),
+
+
+    path("recommend-track/", RecommendTrackView.as_view(), name="recommend-track"),
+
+    path('gemini/chat/', ChatWithGeminiAPI.as_view()),
+
 ]

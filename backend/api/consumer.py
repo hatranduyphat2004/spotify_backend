@@ -7,6 +7,7 @@ from api.models.Message import Message
 from api.models.Conversation import Conversation
 from asgiref.sync import sync_to_async
 
+
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.user = self.scope['user']
@@ -24,7 +25,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         await self.accept()
 
-
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
             self.room_group_name,
@@ -37,8 +37,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         user = self.scope["user"]
         conversation_id = self.conversation_id
-        
-        
 
         # Lưu message vào DB (chạy trong thread đồng bộ)
         message = await sync_to_async(Message.objects.create)(
@@ -47,7 +45,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             content=content,
             sent_at=timezone.now()
         )
-
         # Broadcast cho các client trong group
         await self.channel_layer.group_send(
             self.room_group_name,
@@ -55,6 +52,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'type': 'chat_message',
                 'message': content,
                 'sender': user.id,
+                'sender_username': user.username,
                 'sent_at': str(message.sent_at),
             }
         )
@@ -63,5 +61,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'message': event['message'],
             'sender': event['sender'],
+            'sender_username': event['sender_username'],
             'sent_at': event['sent_at'],
         }))
