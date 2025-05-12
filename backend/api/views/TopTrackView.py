@@ -32,3 +32,60 @@ class TopTrackView(APIView):
             "success": True,
             "data": serializer.data
         }, status=status.HTTP_200_OK)
+        
+    def get_top_popular_tracks(self, request):
+        try:
+            # Lấy top 10 track phổ biến nhất
+            top_10_tracks = Track.objects.order_by('-popularity', '-created_at')[:10]
+            serializer_top_10 = TrackSerializer(top_10_tracks, many=True)
+            for track in top_10_tracks:
+                print(f"Track: {track.title}, Popularity: {track.popularity}, Created at: {track.created_at}")
+
+
+            # Lấy top 50 track phổ biến nhất
+            # top_50_tracks = Track.objects.order_by('-popularity', '-created_at')[:50]
+            # serializer_top_50 = TrackSerializer(top_50_tracks, many=True)
+
+            return Response({
+                "success": True,
+                "top_10": serializer_top_10.data,
+                # "top_50": serializer_top_50.data
+            }, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({
+                "success": False,
+                "message": str(e)
+            }, status=status.HTTP_400_BAD_REQUEST)
+    def patch(self, request, track_id):
+        """
+        Hàm này sẽ được gọi khi người dùng click vào bài hát, 
+        tăng giá trị popularity lên 1 đơn vị.
+        """
+        try:
+            # Lấy track bằng track_id
+            track = Track.objects.get(id=track_id)
+            
+            # Tăng giá trị popularity lên 1
+            track.popularity += 1
+            track.save()
+
+            # Trả về dữ liệu đã được cập nhật
+            serializer = TrackSerializer(track)
+            return Response({
+                "success": True,
+                "data": serializer.data
+            }, status=status.HTTP_200_OK)
+        
+        except Track.DoesNotExist:
+            return Response({
+                "success": False,
+                "message": "Track không tồn tại"
+            }, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({
+                "success": False,
+                "message": str(e)
+            }, status=status.HTTP_400_BAD_REQUEST)
+            
+    
