@@ -51,10 +51,25 @@ class TrackView(APIView):
 
     def get(self, request, pk=None, album_id=None):
         """Lấy danh sách tracks theo điều kiện."""
+        artist_id = request.query_params.get('artist_id', None)
+        print(f">>>>>>>>>>>>>>>>>>w.{artist_id}")
+
         try:
+
             if album_id is not None:
                 # Lấy danh sách track của một album
                 tracks = Track.objects.filter(album=album_id)
+
+            elif artist_id is not None:
+                print(f">>>>>>>>>>>>>>>>>>.{artist_id}")
+                # Lấy danh sách track của một artist
+                artist_tracks = ArtistTrack.objects.filter(artist_id=artist_id)
+                track_ids = [
+                    artist_track.track.track_id for artist_track in artist_tracks]
+
+                # Lấy tất cả các track tương ứng với artist_id
+                tracks = Track.objects.filter(track_id__in=track_ids)
+
             elif pk:
                 # Lấy một track cụ thể
                 track = get_object_or_404(Track, pk=pk)
@@ -99,14 +114,13 @@ class TrackView(APIView):
         required_fields = ['title', 'artist_id[]']
         for field in required_fields:
             value = request.data.get(field)
-            print(f">>>>>>>>>>>>>>>{value}")
             if value in [None, '', [], 'null']:
                 return Response({
                     "success": False,
                     "message": f"Thiếu trường bắt buộc: {field}"
                 }, status=status.HTTP_400_BAD_REQUEST)
 
-        artist_ids_rq = request.data.getlist('artist_ids', [])
+        artist_ids_rq = request.data.getlist('artist_id[]', [])
         artist_ids = [int(i) for i in artist_ids_rq if i]
         if not artist_ids:
             return Response({
@@ -124,8 +138,6 @@ class TrackView(APIView):
                 "message": "File nhạc/ video không được để trống."
             }, status=status.HTTP_400_BAD_REQUEST)
 
-        # Kiểm tra danh sách artist tồn tại
-        artist_ids = request.data.getlist('artist_id[]')
         artists = []
         for artist_id in artist_ids:
             try:
@@ -147,9 +159,15 @@ class TrackView(APIView):
 
         # Chuẩn bị dữ liệu
         data = request.data
+
         data['file_path'] = track_file
         data['img_path'] = img_file
         data['video_path'] = video_file
+        # Kiểm tra is_premium trong request và cập nhật preview_url
+        if data.get('is_premium', False):  # Nếu is_premium là True
+            data['preview_url'] = "https://phathocit-spotify-backend-bucket.s3.us-east-2.amazonaws.com/tracks/Introducing+Premium+Mini.mp3"
+        else:
+            data['preview_url'] = ""
 
         # Xử lý duration
         try:
