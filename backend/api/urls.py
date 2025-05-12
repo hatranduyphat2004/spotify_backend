@@ -1,24 +1,26 @@
-from django.urls import path
-from api.views.AuthView import AuthView
-from api.views.UserView import UserView
-from api.views.ArtistView import ArtistView
 from api.views.AlbumView import AlbumView
-from api.views.TrackView import TrackView
+from api.views.ArtistAlbumView import ArtistAlbumView, ArtistAlbumByAlbumView, ArtistAlbumByArtistView
+from api.views.ArtistTrackView import ArtistTrackView, ArtistTrackByTrackView, ArtistTrackByArtistView
+from api.views.ArtistView import ArtistView
+from api.views.AuthView import AuthView
+from api.views.ConversationMemberView import AddConversationMemberView
+from api.views.ConversationView import ConversationListView, ConversationCreateView, DeleteConversationView
 from api.views.FolderView import FolderView
 from api.views.GenreView import GenreView
+from api.views.MessageView import ConversationMessageHistoryView, MarkMessageAsReadView, DeleteMessageView, \
+    SendMessageView
+from api.views.PlaylistTrackView import AddTrackToPlaylistView
 from api.views.PlaylistView import PlaylistView
-from api.views.ConversationView import ConversationListView, ConversationCreateView, DeleteConversationView
-from api.views.ConversationMemberView import AddConversationMemberView
-from api.views.MessageView import ConversationMessageHistoryView, MarkMessageAsReadView, DeleteMessageView, SendMessageView
-from api.views.TransactionView import TransactionView
-from api.views.SubscriptionPlanView import SubscriptionPlanView
-from api.views.TransactionByOrderCodeView import TransactionByOrderCodeView
-from api.views.StreamView import stream_mp3
-from api.views.StreamView import get_audio_url
-from api.views.TopTrackView import TopTrackView
 from api.views.SearchView import SearchView
-from api.views.ArtistTrackView import ArtistTrackView, ArtistTrackByTrackView, ArtistTrackByArtistView
-from api.views.ArtistAlbumView import ArtistAlbumView, ArtistAlbumByAlbumView, ArtistAlbumByArtistView
+from api.views.StreamView import get_audio_url
+from api.views.StreamView import stream_mp3
+from api.views.SubscriptionPlanView import SubscriptionPlanView
+from api.views.TopTrackView import TopTrackView
+from api.views.TrackView import TrackView
+from api.views.TransactionByOrderCodeView import TransactionByOrderCodeView
+from api.views.TransactionView import TransactionView
+from api.views.UserView import UserView
+from django.urls import path
 
 urlpatterns = [
     path('presigned-url/<str:filename>/', get_audio_url),
@@ -39,8 +41,6 @@ urlpatterns = [
          name='user_suspend'),  # PUT (suspend user)
     path('users/<int:pk>/active/', UserView.as_view(),
          name='user_active'),  # PUT (active user)
-
-
     # Album
     path('albums/', AlbumView.as_view(), name='album_list'),  # GET (all), POST
     path('albums/<int:pk>/', AlbumView.as_view(),
@@ -51,6 +51,8 @@ urlpatterns = [
          name='track_detail'),  # GET (one), PUT, DELETE
     path('tracks/album/<int:album_id>/', TrackView.as_view(),
          name='track_by_album'),  # GET tracks by album
+    path('tracks/search-by-title/', TrackView.as_view(), name='track_search_by_title'),
+
     # Folder
     path('folders/', FolderView.as_view(),
          name='folder_list'),  # GET (all), POST
@@ -60,14 +62,14 @@ urlpatterns = [
     path('genres/', GenreView.as_view(), name='genre_list'),  # GET (all), POST
     path('genres/<int:pk>/', GenreView.as_view(),
          name='genre_detail'),  # GET (one), PUT, DELETE
-
     # Playlist
-    path('playlists/', PlaylistView.as_view()
-         ),             # GET all / POST new
+    path('playlists/', PlaylistView.as_view()),  # GET all / POST new
     path('playlists/<int:pk>/', PlaylistView.as_view()),
-
-
-
+    # PlaylistTrack
+    path('playlists/get-all-tracks/<int:playlist_id>/', AddTrackToPlaylistView.as_view(), name='get-tracks-by-playlist'),
+    path('playlists/add-track/<int:playlist_id>/', AddTrackToPlaylistView.as_view(), name='add-track-to-playlist'),
+    path('playlists/<int:playlist_id>/remove-track/<int:track_id>/', AddTrackToPlaylistView.as_view(),
+         name='remove-track-from-playlist'),
     # Conversation
     path('conversations/', ConversationListView.as_view(),
          name='conversation-list'),
@@ -108,7 +110,6 @@ urlpatterns = [
     path('artist-tracks/artist/<int:artist_id>/',
          ArtistTrackByArtistView.as_view(), name='artist-track-by-artist'),
 
-
     # More Track
     path('tracks/recommended/', TopTrackView.as_view(),
          name='track_recommended'),  # GET (all), POST
@@ -121,7 +122,6 @@ urlpatterns = [
          ArtistAlbumByAlbumView.as_view(), name='artist-album-by-album'),
     path('artist-albums/artist/<int:artist_id>/',
          ArtistAlbumByArtistView.as_view(), name='artist-album-by-artist'),
-
 
     path('search/', SearchView.as_view(), name='search-track')
 

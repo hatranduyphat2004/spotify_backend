@@ -25,28 +25,43 @@ class TrackView(APIView):
         return [IsAuthenticated()]
 
     def get(self, request, pk=None, album_id=None):
-        """Lấy danh sách tracks theo điều kiện."""
+        """Xử lý các trường hợp GET: theo pk, album_id hoặc title."""
+
+        title_query = request.query_params.get('title', None)
+
         try:
-            if album_id is not None:
-                # Lấy danh sách track của một album
-                tracks = Track.objects.filter(album=album_id)
-            elif pk:
-                # Lấy một track cụ thể
+            if pk:
                 track = get_object_or_404(Track, pk=pk)
                 serializer = TrackSerializer(track)
                 return Response({
                     "success": True,
                     "data": serializer.data
                 }, status=status.HTTP_200_OK)
-            else:
-                # Lấy tất cả tracks
-                tracks = Track.objects.all()
 
-            serializer = TrackSerializer(tracks, many=True)
-            return Response({
-                "success": True,
-                "data": serializer.data
-            }, status=status.HTTP_200_OK)
+            elif album_id:
+                tracks = Track.objects.filter(album=album_id)
+                serializer = TrackSerializer(tracks, many=True)
+                return Response({
+                    "success": True,
+                    "data": serializer.data
+                }, status=status.HTTP_200_OK)
+
+            elif title_query:
+                tracks = Track.objects.filter(title__icontains=title_query)
+                serializer = TrackSerializer(tracks, many=True)
+                return Response({
+                    "success": True,
+                    "data": serializer.data
+                }, status=status.HTTP_200_OK)
+
+            else:
+                tracks = Track.objects.all()
+                serializer = TrackSerializer(tracks, many=True)
+                return Response({
+                    "success": True,
+                    "data": serializer.data
+                }, status=status.HTTP_200_OK)
+
         except Exception as e:
             return Response({
                 "success": False,

@@ -8,7 +8,7 @@ class Playlist(models.Model):
     playlist_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     folder = models.ForeignKey(
-        Folder, on_delete=models.CASCADE, null=True, blank=True)
+    Folder, on_delete=models.CASCADE, null=True, blank=True)
     description = models.TextField(blank=True)
     cover_img_url = models.URLField(blank=True)
     is_active = models.BooleanField(default=True)

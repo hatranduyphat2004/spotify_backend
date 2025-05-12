@@ -4,8 +4,7 @@ from .Track import Track
 
 
 class PlaylistTrack(models.Model):
-    playlist = models.ForeignKey(
-        Playlist, on_delete=models.CASCADE, related_name='playlist_tracks')
+    playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE, related_name='playlist_tracks')
     track = models.ForeignKey(Track, on_delete=models.CASCADE)
     position = models.PositiveIntegerField()
     is_active = models.BooleanField(default=True)

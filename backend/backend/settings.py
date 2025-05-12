@@ -10,18 +10,17 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from datetime import timedelta
 from pathlib import Path
-from dotenv import load_dotenv
-import os
 
+from dotenv import load_dotenv
 
 # Tải các biến môi trường từ file .env
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -66,6 +65,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -97,7 +98,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -123,7 +123,7 @@ DATABASES = {
         'USER': 'root',  # Tài khoản MySQL
         'PASSWORD': '',  # Mật khẩu MySQL
         'HOST': 'localhost',  # Nếu dùng máy chủ từ xa, thay bằng IP
-        'PORT': '2434',  # Cổng của P
+        'PORT': '3306',  # Cổng của P
         'OPTIONS': {
             'charset': 'utf8mb4',  # Hỗ trợ Unicode đầy đủ
         },
@@ -247,6 +247,8 @@ SIMPLE_JWT = {
 
 # CORS_ALLOW_ALL_ORIGINS = True  # Chấp nhận tất cả domain
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 # không cần do dùng s3 aws
 # MEDIA_URL = '/media/'  # URL để truy cập file uploads
