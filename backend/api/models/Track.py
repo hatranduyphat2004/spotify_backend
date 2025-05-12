@@ -15,6 +15,7 @@ class Track(models.Model):
     video_path = models.FileField(upload_to='vids/', null=True, blank=True)
     track_number = models.PositiveIntegerField(null=True, blank=True)
     popularity = models.PositiveIntegerField(default=0)
+    description = models.TextField(null=True, blank=True)
     preview_url = models.URLField(blank=True)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(default=timezone.now)

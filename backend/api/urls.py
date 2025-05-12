@@ -7,8 +7,7 @@ from api.views.ConversationMemberView import AddConversationMemberView
 from api.views.ConversationView import ConversationListView, ConversationCreateView, DeleteConversationView
 from api.views.FolderView import FolderView
 from api.views.GenreView import GenreView
-from api.views.MessageView import ConversationMessageHistoryView, MarkMessageAsReadView, DeleteMessageView, \
-    SendMessageView
+from api.views.MessageView import ConversationMessageHistoryView, MarkMessageAsReadView, DeleteMessageView, SendMessageView
 from api.views.PlaylistTrackView import AddTrackToPlaylistView
 from api.views.PlaylistView import PlaylistView
 from api.views.SearchView import SearchView
@@ -21,8 +20,20 @@ from api.views.TransactionByOrderCodeView import TransactionByOrderCodeView
 from api.views.TransactionView import TransactionView
 from api.views.UserView import UserView
 from django.urls import path
+from api.views.GeminiView import ChatWithGeminiAPI
+from api.views.RecommendTrackView import RecommendTrackView
+from api.views.LyricView import LyricView
+from api.views.UploadLyricView import UploadLyricView
+from api.views.GetLyricByTrackView import GetLyricByTrackView
 
 urlpatterns = [
+    path('lyrics/upload/<int:track_id>/',
+         UploadLyricView.as_view()),
+    path('lyrics/track/<int:track_id>/', GetLyricByTrackView.as_view()),
+    #
+    path('lyrics/', LyricView.as_view()),
+    path('lyrics/<int:pk>/', LyricView.as_view()),
+    #
     path('presigned-url/<str:filename>/', get_audio_url),
     # Stream track
     path('stream/<str:filename>/', stream_mp3, name='stream_mp3'),
@@ -123,6 +134,12 @@ urlpatterns = [
     path('artist-albums/artist/<int:artist_id>/',
          ArtistAlbumByArtistView.as_view(), name='artist-album-by-artist'),
 
-    path('search/', SearchView.as_view(), name='search-track')
+
+    path('search/', SearchView.as_view(), name='search-track'),
+
+
+    path("recommend-track/", RecommendTrackView.as_view(), name="recommend-track"),
+
+    path('gemini/chat/', ChatWithGeminiAPI.as_view()),
 
 ]

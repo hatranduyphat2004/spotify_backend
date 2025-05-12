@@ -19,6 +19,8 @@ from dotenv import load_dotenv
 # Tải các biến môi trường từ file .env
 load_dotenv()
 
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -166,6 +168,7 @@ DATABASES = {
     #     'OPTIONS': {
     #         'charset': 'utf8mb4',  # Hỗ trợ Unicode đầy đủ
     #     },
+    # }
 
     # 'default': {
     #     'ENGINE': 'django.db.backends.mysql',  # Sử dụng MySQL
