@@ -1,6 +1,9 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
 from rest_framework import status
+from rest_framework import viewsets
+from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from api.serializers.TrackSerializer import TrackSerializer
@@ -24,6 +27,30 @@ class TrackView(APIView):
             return [AllowAny()]
         return [IsAuthenticated()]
 
+    def get_top_popular_tracks(self, request):
+        try:
+            # Lấy top 10 track phổ biến nhất
+            top_10_tracks = Track.objects.order_by(
+                '-popularity', '-created_at')[:10]
+            serializer_top_10 = TrackSerializer(top_10_tracks, many=True)
+
+            # Lấy top 50 track phổ biến nhất
+            top_50_tracks = Track.objects.order_by(
+                '-popularity', '-created_at')[:50]
+            serializer_top_50 = TrackSerializer(top_50_tracks, many=True)
+
+            return Response({
+                "success": True,
+                "top_10": serializer_top_10.data,
+                "top_50": serializer_top_50.data
+            }, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({
+                "success": False,
+                "message": str(e)
+            }, status=status.HTTP_400_BAD_REQUEST)
+
     def get(self, request, pk=None, album_id=None):
         """Xử lý các trường hợp GET: theo pk, album_id hoặc title."""
 
@@ -37,7 +64,6 @@ class TrackView(APIView):
                 tracks = Track.objects.filter(album=album_id)
 
             elif artist_id is not None:
-                print(f">>>>>>>>>>>>>>>>>>.{artist_id}")
                 # Lấy danh sách track của một artist
                 artist_tracks = ArtistTrack.objects.filter(artist_id=artist_id)
                 track_ids = [
@@ -330,3 +356,19 @@ class TrackView(APIView):
             "success": True,
             "message": "Track đã được xóa thành công"
         }, status=status.HTTP_204_NO_CONTENT)
+
+    def get_tracks_by_album(request, album_id):
+        tracks = Track.objects.filter(
+            album_id=album_id).order_by('-popularity')
+        serializer = TrackSerializer(tracks, many=True)
+        return Response({'success': True, 'data': serializer.data})
+
+    # Xử lí tăng popularity
+    def increase_popularity(self, request, track_id):
+        try:
+            track = Track.objects.get(id=track_id)
+            track.popularity += 1
+            track.save()
+            return Response({"message": "Popularity increased!"}, status=status.HTTP_200_OK)
+        except Track.DoesNotExist:
+            return Response({"error": "Track not found"}, status=status.HTTP_404_NOT_FOUND)

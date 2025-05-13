@@ -20,13 +20,22 @@ from api.views.TransactionByOrderCodeView import TransactionByOrderCodeView
 from api.views.TransactionView import TransactionView
 from api.views.UserView import UserView
 from django.urls import path
+from api.views.PopularityView import IncreasePopularityView
 from api.views.GeminiView import ChatWithGeminiAPI
 from api.views.RecommendTrackView import RecommendTrackView
 from api.views.LyricView import LyricView
 from api.views.UploadLyricView import UploadLyricView
 from api.views.GetLyricByTrackView import GetLyricByTrackView
+from api.views.UserLikedTrackView import UserLikedTrackView
 
 urlpatterns = [
+    path("like-track/", UserLikedTrackView.as_view()),
+    path('like-track/user/<int:pk>/',
+         UserLikedTrackView.as_view()),  # pk là user_id
+    path('like-track/<int:pk>/', UserLikedTrackView.as_view()),       # pk là bản ghi
+    path('like-track/user/<int:user_id>/track/<int:track_id>/',
+         UserLikedTrackView.as_view()),
+    #
     path('lyrics/upload/<int:track_id>/',
          UploadLyricView.as_view()),
     path('lyrics/track/<int:track_id>/', GetLyricByTrackView.as_view()),
@@ -124,6 +133,7 @@ urlpatterns = [
     # More Track
     path('tracks/recommended/', TopTrackView.as_view(),
          name='track_recommended'),  # GET (all), POST
+    path('tracks/top', TopTrackView.as_view(), name='top_tracks'),
 
     # Artist-Album
     path('artist-albums/', ArtistAlbumView.as_view(), name='artist-album-list'),
@@ -133,6 +143,10 @@ urlpatterns = [
          ArtistAlbumByAlbumView.as_view(), name='artist-album-by-album'),
     path('artist-albums/artist/<int:artist_id>/',
          ArtistAlbumByArtistView.as_view(), name='artist-album-by-artist'),
+
+    # Popularity
+    path('tracks/<int:track_id>/increase-popularity/',
+         IncreasePopularityView.as_view(), name='increase-popularity'),
 
 
     path('search/', SearchView.as_view(), name='search-track'),

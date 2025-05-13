@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import get_object_or_404
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.parsers import MultiPartParser, FormParser
 from api.serializers.AlbumSerializer import AlbumSerializer
 from api.models.Album import Album
@@ -11,8 +11,13 @@ from api.models.ArtistAlbum import ArtistAlbum
 
 
 class AlbumView(APIView):
-    permission_classes = [IsAuthenticated]  # Yêu cầu xác thực JWT
+    # permission_classes = [IsAuthenticated]  # Yêu cầu xác thực JWT
     parser_classes = (MultiPartParser, FormParser)  # Hỗ trợ file upload
+
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [AllowAny()]
+        return [IsAuthenticated()]
 
     def get(self, request, pk=None):
         """Lấy danh sách tất cả albums hoặc một album cụ thể."""
