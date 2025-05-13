@@ -26,15 +26,17 @@ class TrackView(APIView):
         if self.request.method == 'GET':
             return [AllowAny()]
         return [IsAuthenticated()]
-    
+
     def get_top_popular_tracks(self, request):
         try:
             # Lấy top 10 track phổ biến nhất
-            top_10_tracks = Track.objects.order_by('-popularity', '-created_at')[:10]
+            top_10_tracks = Track.objects.order_by(
+                '-popularity', '-created_at')[:10]
             serializer_top_10 = TrackSerializer(top_10_tracks, many=True)
 
             # Lấy top 50 track phổ biến nhất
-            top_50_tracks = Track.objects.order_by('-popularity', '-created_at')[:50]
+            top_50_tracks = Track.objects.order_by(
+                '-popularity', '-created_at')[:50]
             serializer_top_50 = TrackSerializer(top_50_tracks, many=True)
 
             return Response({
@@ -52,7 +54,6 @@ class TrackView(APIView):
     def get(self, request, pk=None, album_id=None):
         """Lấy danh sách tracks theo điều kiện."""
         artist_id = request.query_params.get('artist_id', None)
-        print(f">>>>>>>>>>>>>>>>>>w.{artist_id}")
 
         try:
 
@@ -61,7 +62,6 @@ class TrackView(APIView):
                 tracks = Track.objects.filter(album=album_id)
 
             elif artist_id is not None:
-                print(f">>>>>>>>>>>>>>>>>>.{artist_id}")
                 # Lấy danh sách track của một artist
                 artist_tracks = ArtistTrack.objects.filter(artist_id=artist_id)
                 track_ids = [
@@ -338,12 +338,13 @@ class TrackView(APIView):
             "success": True,
             "message": "Track đã được xóa thành công"
         }, status=status.HTTP_204_NO_CONTENT)
-        
+
     def get_tracks_by_album(request, album_id):
-        tracks = Track.objects.filter(album_id=album_id).order_by('-popularity')
+        tracks = Track.objects.filter(
+            album_id=album_id).order_by('-popularity')
         serializer = TrackSerializer(tracks, many=True)
         return Response({'success': True, 'data': serializer.data})
-    
+
     # Xử lí tăng popularity
     def increase_popularity(self, request, track_id):
         try:
