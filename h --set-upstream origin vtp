@@ -1,0 +1,460 @@
+[33mcommit 90f52dc1e8ba5358125c7b6094647792a2d9d45f[m[33m ([m[1;36mHEAD -> [m[1;32mvtp[m[33m, [m[1;31morigin/vtp[m[33m)[m
+Merge: c808798 637db5a
+Author: Phat <vootanphat@gmail.com>
+Date:   Mon May 12 15:20:03 2025 +0700
+
+    Resolve merge conflicts after pull
+
+[33mcommit c808798324059d847162694ca3fd7d95f0509164[m
+Author: Phat <vootanphat@gmail.com>
+Date:   Mon May 12 12:05:18 2025 +0700
+
+    update playlist
+
+[33mcommit 637db5a0035d1b5cbaede0098257544698dd2405[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Merge: eb7e041 c2f16b1
+Author: Phạm Công Minh <145591088+hnimgnocmahp@users.noreply.github.com>
+Date:   Sun May 11 18:33:45 2025 +0700
+
+    Merge pull request #12 from hatranduyphat2004/minh
+    
+    Minh
+
+[33mcommit c2f16b1fb94bc7a0e9873e14ddae6c1cc5599b87[m
+Merge: c1178d4 eb7e041
+Author: Phạm Công Minh <145591088+hnimgnocmahp@users.noreply.github.com>
+Date:   Sun May 11 18:33:39 2025 +0700
+
+    Merge branch 'main' into minh
+
+[33mcommit eb7e04173dc6021c001ef4f35f9d17026a4fb736[m
+Author: phathociT <hatranduyphat2004@gmail.com>
+Date:   Sun May 11 17:06:58 2025 +0700
+
+    phat them lyric
+
+[33mcommit c1178d426ebed286f36b221c7fe0cabb5aa48c6d[m
+Merge: a0fb4e9 19f1d89
+Author: Phạm Công Minh <145591088+hnimgnocmahp@users.noreply.github.com>
+Date:   Sun May 11 15:49:26 2025 +0700
+
+    Merge branch 'main' into minh
+
+[33mcommit a0fb4e951ca32bc358d7a825b314bd755b75b344[m
+Author: hnimgnocmahp <pcongminh551@gmail.com>
+Date:   Sun May 11 15:47:25 2025 +0700
+
+    trackbot
+
+[33mcommit 19f1d898467b9c8683cf597a7814eb8c1b89081d[m
+Merge: 5b67751 705e3a7
+Author: Phạm Công Minh <145591088+hnimgnocmahp@users.noreply.github.com>
+Date:   Sat May 10 13:41:14 2025 +0700
+
+    Merge pull request #11 from hatranduyphat2004/minh
+    
+    remove openai
+
+[33mcommit 0c07c0e186aa41e7a3d05ca4786cc4c00d184f0f[m
+Merge: 705e3a7 5b67751
+Author: hnimgnocmahp <pcongminh551@gmail.com>
+Date:   Sat May 10 13:40:15 2025 +0700
+
+    Merge branch 'main' of https://github.com/hatranduyphat2004/spotify_backend into minh
+
+[33mcommit 705e3a78f3ccecb6ffb08f9463baa5c1166dc8a4[m
+Author: hnimgnocmahp <pcongminh551@gmail.com>
+Date:   Sat May 10 13:39:16 2025 +0700
+
+    remove openai
+
+[33mcommit 5b677517d48da6cd3608a19ebe8f14a249ce1e2a[m
+Merge: 6d7ed27 4584d48
+Author: Phạm Công Minh <145591088+hnimgnocmahp@users.noreply.github.com>
+Date:   Wed May 7 15:35:54 2025 +0700
+
+    Merge pull request #10 from hatranduyphat2004/minh
+    
+    fetch api gemini
+
+[33mcommit 4584d48d560a64f2a1b7be92078af2efb3b7fbd4[m
+Author: hnimgnocmahp <pcongminh551@gmail.com>
+Date:   Wed May 7 15:34:47 2025 +0700
+
+    fetch api gemini
+
+[33mcommit 6d7ed271dc3c54366f280856aefcbf305b092c46[m[33m ([m[1;32mmain[m[33m)[m
+Author: phathociT <hatranduyphat2004@gmail.com>
+Date:   Tue May 6 14:46:35 2025 +0700
+
+    phat done
+
+[33mcommit ebb4e0e4b5cb24fec77986629de8ab230cee01a8[m
+Author: phathociT <hatranduyphat2004@gmail.com>
+Date:   Tue May 6 13:52:38 2025 +0700
+
+    phat moi nhat
+
+[33mcommit 086775ff838cfed643ac7540cfc040a4daee370f[m
+Merge: 073458c b2906cf
+Author: Phạm Công Minh <145591088+hnimgnocmahp@users.noreply.github.com>
+Date:   Sun May 4 23:19:05 2025 +0700
+
+    Merge pull request #9 from hatranduyphat2004/minh
+    
+    push chat done
+
+[33mcommit b2906cfa73fe963f7a807fdb227ff9df38949ae5[m[33m ([m[1;31morigin/minh[m[33m)[m
+Merge: cf75fac 073458c
+Author: Phạm Công Minh <145591088+hnimgnocmahp@users.noreply.github.com>
+Date:   Sun May 4 23:18:55 2025 +0700
+
+    Merge branch 'main' into minh
+
+[33mcommit 073458c9782f17af927c9c86487d7ee29e8b6af5[m
+Merge: bed8222 5e9823e
+Author: phathociT <hatranduyphat2004@gmail.com>
+Date:   Sun May 4 23:18:04 2025 +0700
+
+    phat
+
+[33mcommit cf75facc3d3466bd1d93707d1be1169d2fcdefe4[m
+Merge: bc4deaa bed8222
+Author: Phạm Công Minh <145591088+hnimgnocmahp@users.noreply.github.com>
+Date:   Sun May 4 23:18:03 2025 +0700
+
+    Merge branch 'main' into minh
+
+[33mcommit bed8222be2faef52ec0e36a6a0640e5d7c706810[m
+Author: phathociT <hatranduyphat2004@gmail.com>
+Date:   Sun May 4 23:16:19 2025 +0700
+
+    phat
+
+[33mcommit bc4deaa8ac48bba2781ba1138a7079858e0ab9b8[m
+Author: hnimgnocmahp <pcongminh551@gmail.com>
+Date:   Sun May 4 23:05:38 2025 +0700
+
+    push chat done
+
+[33mcommit 5e9823e5e268a33a5f7830dfca77a225672c8988[m[33m ([m[1;31morigin/phat[m[33m)[m
+Author: phathociT <hatranduyphat2004@gmail.com>
+Date:   Sun May 4 22:52:57 2025 +0700
+
+    phat
+
+[33mcommit e0fd3f60a1609f543eb5343065b033b75f245ffe[m
+Merge: 094f727 ae55afa
+Author: Hữu Luân <153551408+huuluan11203@users.noreply.github.com>
+Date:   Sun May 4 22:31:32 2025 +0700
+
+    Merge pull request #8 from hatranduyphat2004/luan
+    
+    luan
+
+[33mcommit ae55afa6d3ef7d1e09600ae0d28c8880ba9d6da6[m[33m ([m[1;31morigin/luan[m[33m)[m
+Author: huuluan11203 <huuluan11203@gmail.com>
+Date:   Sun May 4 22:30:51 2025 +0700
+
+    luan
+
+[33mcommit 094f727944315ea1ca596f256e1f54d5da519055[m
+Merge: 66258d9 0d8142d
+Author: phathociT <hatranduyphat2004@gmail.com>
+Date:   Sun May 4 16:13:33 2025 +0700
+
+    Merge branch 'phat'
+
+[33mcommit 0d8142d0730d80990d41c5bab88cfbf8a898577c[m
+Author: phathociT <hatranduyphat2004@gmail.com>
+Date:   Sun May 4 16:13:17 2025 +0700
+
+    phat
+
+[33mcommit 66258d94469d9d5eff42678d1e3fdd006073c939[m
+Merge: f22bf9b 72cd7d6
+Author: Hữu Luân <153551408+huuluan11203@users.noreply.github.com>
+Date:   Sun May 4 13:56:24 2025 +0700
+
+    Merge pull request #7 from hatranduyphat2004/luan
+    
+    Thêm ArtistAlbumView
+
+[33mcommit 72cd7d6259e5a5fefeca724f5514f4876c0de15f[m
+Author: huuluan11203 <huuluan11203@gmail.com>
+Date:   Sun May 4 13:54:57 2025 +0700
+
+    Admin
+
+[33mcommit f22bf9b4d93e5b9614c488c0c91ea492c6859596[m
+Merge: 55c27ab b7371cf
+Author: phathociT <hatranduyphat2004@gmail.com>
+Date:   Sun May 4 12:06:09 2025 +0700
+
+    Merge branch 'main' of https://github.com/hatranduyphat2004/spotify_backend
+
+[33mcommit 55c27abae3d42964ece8ca9022f932c0e4558155[m
+Author: phathociT <hatranduyphat2004@gmail.com>
+Date:   Sun May 4 12:03:36 2025 +0700
+
+    phat
+
+[33mcommit b7371cf2da17c85e6334d1f483c7383a3a72023c[m
+Merge: 498bef9 f2c720d
+Author: Hữu Luân <153551408+huuluan11203@users.noreply.github.com>
+Date:   Sat May 3 23:35:40 2025 +0700
+
+    Merge pull request #6 from hatranduyphat2004/luan
+    
+    Thêm Artisttrackview
+
+[33mcommit f2c720d6c70e3bb87011672ae8b781ee368edffd[m
+Author: huuluan11203 <huuluan11203@gmail.com>
+Date:   Sat May 3 23:34:48 2025 +0700
+
+    luan
+
+[33mcommit 0b73ee242c3db943b5b5d48b8b1e41b9974d8aad[m
+Merge: 8b5dae6 498bef9
+Author: huuluan11203 <huuluan11203@gmail.com>
+Date:   Sat May 3 20:12:57 2025 +0700
+
+    luan
+
+[33mcommit 8b5dae60b69f379ea591533322ce4878f6ed44a1[m
+Author: huuluan11203 <huuluan11203@gmail.com>
+Date:   Sat May 3 20:09:45 2025 +0700
+
+    luan
+
+[33mcommit 498bef9989d629659017a1eecf1189c6263af917[m
+Author: phathociT <hatranduyphat2004@gmail.com>
+Date:   Sat May 3 11:25:15 2025 +0700
+
+    phat fix duration
+
+[33mcommit 164d75d6085911bcf6a1ab2dc0fa27f1f1c6f4b9[m
+Merge: 857a6d7 73c77d6
+Author: phathociT <hatranduyphat2004@gmail.com>
+Date:   Sat May 3 11:01:42 2025 +0700
+
+    Merge branch 'main' of https://github.com/hatranduyphat2004/spotify_backend into phat
+
+[33mcommit 857a6d7262a73000c03c7a4e99d46f66da2ad7f1[m
+Author: phathociT <hatranduyphat2004@gmail.com>
+Date:   Sat May 3 11:01:25 2025 +0700
+
+    phat
+
+[33mcommit 73c77d6d25aee2a864f3fad16a9e256165bbd149[m
+Merge: 1737bcb 16a156d
+Author: Hữu Luân <153551408+huuluan11203@users.noreply.github.com>
+Date:   Fri May 2 22:42:29 2025 +0700
+
+    Merge pull request #5 from hatranduyphat2004/luan
+    
+    Luan
+
+[33mcommit 16a156ddb3fb3cbee8a557ffe224d358a88261e9[m
+Merge: d305f4c 1737bcb
+Author: Hữu Luân <153551408+huuluan11203@users.noreply.github.com>
+Date:   Fri May 2 22:42:04 2025 +0700
+
+    Merge branch 'main' into luan
+
+[33mcommit d305f4c2783e491c763f660f7eb41eb87bf4faa3[m
+Author: huuluan11203 <huuluan11203@gmail.com>
+Date:   Fri May 2 22:28:43 2025 +0700
+
+    luan
+
+[33mcommit 1737bcbbda8c754df35dc25d2dbd8061cd8a8fa2[m
+Merge: 9f10003 4518a9b
+Author: Phạm Công Minh <145591088+hnimgnocmahp@users.noreply.github.com>
+Date:   Fri May 2 11:57:25 2025 +0700
+
+    Merge pull request #4 from hatranduyphat2004/minh
+    
+    Minh
+
+[33mcommit 4518a9b40f360d1a5a763014b3da0b9a6a1d1a93[m
+Merge: 0324c29 9f10003
+Author: Phạm Công Minh <145591088+hnimgnocmahp@users.noreply.github.com>
+Date:   Fri May 2 11:57:14 2025 +0700
+
+    Merge branch 'main' into minh
+
+[33mcommit 0324c294a6c6ccff3f5113c03dfe9937f0f84197[m
+Author: hnimgnocmahp <pcongminh551@gmail.com>
+Date:   Fri May 2 11:53:41 2025 +0700
+
+    thanh toan
+
+[33mcommit 9f100031f6095c2a3ba739ea88edd76ca5ad98ec[m
+Author: phathociT <hatranduyphat2004@gmail.com>
+Date:   Fri May 2 11:17:47 2025 +0700
+
+    phat
+
+[33mcommit 034d7ab302b745eb762bfbfc8175f5c9225257d0[m
+Author: phathociT <hatranduyphat2004@gmail.com>
+Date:   Thu May 1 17:08:13 2025 +0700
+
+    phat fix duration
+
+[33mcommit 8a5fbb09238b7bb44ec5e4a9d3813a76baaec5d2[m
+Merge: 80f8bf8 38402df
+Author: huuluan11203 <huuluan11203@gmail.com>
+Date:   Thu May 1 09:24:53 2025 +0700
+
+    Merge branch 'main' of https://github.com/hatranduyphat2004/spotify_backend into luan
+
+[33mcommit 80f8bf8cd94e5f42150de0d2d4ea771e213ad4a9[m
+Author: huuluan11203 <huuluan11203@gmail.com>
+Date:   Thu May 1 09:24:48 2025 +0700
+
+    luan
+
+[33mcommit 38402df3fb5a54d8709e49e955e2a7b873179416[m
+Author: phathociT <hatranduyphat2004@gmail.com>
+Date:   Thu May 1 09:24:19 2025 +0700
+
+    phat
+
+[33mcommit faedea3366da37dcc54727c3ea628b02ee62a05c[m
+Author: phathociT <hatranduyphat2004@gmail.com>
+Date:   Wed Apr 30 15:37:58 2025 +0700
+
+    phat fix track
+
+[33mcommit c87a222bbb620c295481697ba41e60437e02fbc7[m
+Author: hnimgnocmahp <pcongminh551@gmail.com>
+Date:   Wed Apr 30 08:37:08 2025 +0700
+
+    change timedelta
+
+[33mcommit 06806525160a19572ed348b69a4672decb40c658[m
+Author: phathociT <hatranduyphat2004@gmail.com>
+Date:   Tue Apr 29 16:12:15 2025 +0700
+
+    phat fix refresh token
+
+[33mcommit a4910b0007af697a54ea72fdf1a15d5829f9f309[m
+Author: phathociT <hatranduyphat2004@gmail.com>
+Date:   Tue Apr 29 14:17:36 2025 +0700
+
+    phat
+
+[33mcommit f3f400d8b1c9a6cf182ffbcde1b0918a4c9e50aa[m
+Author: phathociT <hatranduyphat2004@gmail.com>
+Date:   Tue Apr 29 10:08:34 2025 +0700
+
+    phat
+
+[33mcommit e8968a4903e62364703ff7cf0fbf051b5dfa0480[m
+Author: phathociT <hatranduyphat2004@gmail.com>
+Date:   Tue Apr 15 15:06:55 2025 +0700
+
+    p
+
+[33mcommit 8eb1ec6b4d4332f5a3f33e8032a030222615623b[m
+Merge: a3a374d c164863
+Author: Hữu Luân <153551408+huuluan11203@users.noreply.github.com>
+Date:   Tue Apr 15 15:05:55 2025 +0700
+
+    Merge pull request #3 from hatranduyphat2004/luan
+    
+    luan
+
+[33mcommit c1648634cbd116bf7f288c8f81bda0cc6de88ddd[m
+Author: huuluan11203 <huuluan11203@gmail.com>
+Date:   Tue Apr 15 15:04:26 2025 +0700
+
+    luan
+
+[33mcommit 70d7c7fd2ea55ac926b75a39e1d69a043ce363b9[m
+Merge: 01b2102 a3a374d
+Author: huuluan11203 <huuluan11203@gmail.com>
+Date:   Tue Apr 15 14:36:28 2025 +0700
+
+    luan
+
+[33mcommit 01b2102d21c71769c59ff8fd986669b5b1f8e927[m
+Author: huuluan11203 <huuluan11203@gmail.com>
+Date:   Tue Apr 15 14:35:47 2025 +0700
+
+    luan
+
+[33mcommit a3a374d949272e750d165ac423921faeb5a6ae35[m
+Merge: 123354b d9d891a
+Author: phathociT <hatranduyphat2004@gmail.com>
+Date:   Thu Apr 10 07:25:09 2025 +0700
+
+    phat merge s3
+
+[33mcommit 123354bf1da20bed4782c449ab2b6895446c2c5d[m
+Author: phathociT <hatranduyphat2004@gmail.com>
+Date:   Tue Apr 8 16:21:32 2025 +0700
+
+    phat merge s3
+
+[33mcommit 5ba944822e74580b4c8d856daf4dacf3b967b681[m
+Merge: 618ba01 d9d891a
+Author: huuluan11203 <huuluan11203@gmail.com>
+Date:   Tue Apr 8 12:54:09 2025 +0700
+
+    conflict
+
+[33mcommit d9d891a3fd604f4a3f9c83e96df4b5cb7f653a62[m
+Merge: a817ee6 790cc89
+Author: Phạm Công Minh <145591088+hnimgnocmahp@users.noreply.github.com>
+Date:   Mon Apr 7 22:59:47 2025 +0700
+
+    Merge pull request #2 from hatranduyphat2004/minh
+    
+    dislay all conversation, create new conversation, deleta conversation
+
+[33mcommit 790cc89c2ca12d53eb8b66d1a68cb3f6784052bf[m
+Author: hnimgnocmahp <pcongminh551@gmail.com>
+Date:   Mon Apr 7 22:59:15 2025 +0700
+
+    dislay all conversation, create new conversation, deleta conversation
+
+[33mcommit a817ee6ac9c5becdafbc1f49b376c83268be1fbf[m
+Merge: 5be21c5 4827a98
+Author: Phạm Công Minh <145591088+hnimgnocmahp@users.noreply.github.com>
+Date:   Sun Apr 6 11:53:01 2025 +0700
+
+    Merge pull request #1 from hatranduyphat2004/minh
+    
+    add boto3 pydub storages mutagen Pillow
+
+[33mcommit 4827a981d2d9082e6979e42e9f519b9ad217e016[m
+Author: hnimgnocmahp <pcongminh551@gmail.com>
+Date:   Sun Apr 6 11:51:42 2025 +0700
+
+    add boto3 pydub storages mutagen Pillow
+
+[33mcommit 5be21c5b184fc29ccc9ad311ae453b05cf4c3d3c[m
+Author: phathociT <hatranduyphat2004@gmail.com>
+Date:   Sat Apr 5 19:25:30 2025 +0700
+
+    s3
+
+[33mcommit 618ba010403f5decdf7018d7f4a3f84a928b997c[m
+Author: huuluan11203 <huuluan11203@gmail.com>
+Date:   Fri Apr 4 13:19:23 2025 +0700
+
+    Luan
+
+[33mcommit bc61b4120c004b10413355e4a25ec254f50bbdf3[m
+Author: huuluan11203 <huuluan11203@gmail.com>
+Date:   Fri Apr 4 08:30:42 2025 +0700
+
+    Luan
+
+[33mcommit 9a9fed473162338334b3dc8d68a03070f6103809[m
+Author: phathociT <hatranduyphat2004@gmail.com>
+Date:   Thu Apr 3 18:25:46 2025 +0700
+
+    Init
